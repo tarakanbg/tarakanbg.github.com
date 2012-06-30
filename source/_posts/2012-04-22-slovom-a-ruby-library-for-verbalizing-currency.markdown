@@ -3,7 +3,7 @@ layout: post
 title: "Slovom - a Ruby library for verbalizing currency"
 date: 2012-04-22 14:14
 comments: true
-categories: [ruby, releases, gems]
+categories: [ruby, releases, gems, work]
 ---
 
 {% img right http://i.imgur.com/kCMUi.png %}

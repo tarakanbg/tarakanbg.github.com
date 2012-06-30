@@ -41,3 +41,17 @@
 //$pre-bg: $base03;
 //$pre-border: darken($base02, 5);
 //$pre-color: $base1;
+
+
+$header-bg: #3d884f;
+
+// Main Link Colors
+$link-color: lighten(#3d8773, 1) !default;
+$link-color-hover: adjust-color($link-color, $lightness: 10, $saturation: 25) !default;
+$link-color-visited: adjust-color($link-color, $hue: 80, $lightness: -4) !default;
+$link-color-active: adjust-color($link-color-hover, $lightness: -15) !default;
+
+$subtitle-color: lighten($header-bg, 40);
+$sidebar-bg: desaturate(#eceff5, 8);
+$sidebar-link-color: saturate(#526f9a, 10);
+$sidebar-link-color-hover: darken(#7ab662, 9);

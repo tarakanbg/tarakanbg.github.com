@@ -3,7 +3,7 @@ layout: post
 title: "Rails Installer update for Ubuntu 12.04 (Precise Pangolin)"
 date: 2012-04-26 14:30
 comments: true
-categories: [linux, ruby, releases]
+categories: [linux, ruby, releases, work]
 ---
 
 {% img right http://i.imgur.com/za1ry.png %}
