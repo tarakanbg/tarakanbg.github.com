@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: linux | Patchwork]]></title>
+  <link href="http://tarakanbg.github.com/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://tarakanbg.github.com/"/>
+  <updated>2012-06-30T14:33:41+03:00</updated>
+  <id>http://tarakanbg.github.com/</id>
+  <author>
+    <name><![CDATA[Svilen Vassilev]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Rails Installer update for Ubuntu 12.04 (Precise Pangolin)]]></title>
+    <link href="http://tarakanbg.github.com/blog/2012/04/26/rails-installer-update-for-ubuntu-12-dot-04-precise-pangolin/"/>
+    <updated>2012-04-26T14:30:00+03:00</updated>
+    <id>http://tarakanbg.github.com/blog/2012/04/26/rails-installer-update-for-ubuntu-12-dot-04-precise-pangolin</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/za1ry.png"></p>
+
+<p>I just updated my simple <a href="https://github.com/tarakanbg/railsinstaller">Rails Installer</a> script for
+compatibility with Ubuntu 12.04. Some extra necessary deb packages were added and the ruby version
+is now bumped to 1.9.3. If you don't feel like fiddling with rvm and gemsets, which in my opinion
+is seldom necessary anymore with all the latest bundler improvements, you can just grab the script
+from <a href="https://github.com/tarakanbg/railsinstaller">github</a>.</p>
+]]></content>
+  </entry>
+  
+</feed>

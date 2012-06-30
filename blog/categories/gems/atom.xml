@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: gems | Patchwork]]></title>
+  <link href="http://tarakanbg.github.com/blog/categories/gems/atom.xml" rel="self"/>
+  <link href="http://tarakanbg.github.com/"/>
+  <updated>2012-06-30T14:33:41+03:00</updated>
+  <id>http://tarakanbg.github.com/</id>
+  <author>
+    <name><![CDATA[Svilen Vassilev]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Slovom - a Ruby library for verbalizing currency]]></title>
+    <link href="http://tarakanbg.github.com/blog/2012/04/22/slovom-a-ruby-library-for-verbalizing-currency/"/>
+    <updated>2012-04-22T14:14:00+03:00</updated>
+    <id>http://tarakanbg.github.com/blog/2012/04/22/slovom-a-ruby-library-for-verbalizing-currency</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/kCMUi.png"></p>
+
+<p>Last night I released a new ruby gem (<a href="https://rubygems.org/gems/slovom">slovom</a>).</p>
+
+<p>It converts decimal currency numbers into text in Bulgarian language, which can be useful in
+financial applications, accounting documents, and all other instances requiring currency
+verbalization. It handles the specifics of verbally presenting numbers and prices in Bulgarian,
+including grammatical irregularities, differences due to gender, singularity and plurality
+and the logic of using or omitting the "and" conjunction from the resulting string.</p>
+
+<p>It's extracted from a pawnbroker/pawnshop rails application which I'm currently working on,
+called Lombard, to be released as a service in the coming months.</p>
+
+<p>It's a bit surprising to see some 50 downloads of the gem in less than a day, hopefully
+other Bulgarian ruby developers will find it useful.</p>
+
+<p>Here's the <a href="https://github.com/tarakanbg/slovom">github link</a> for convenience.</p>
+]]></content>
+  </entry>
+  
+</feed>
