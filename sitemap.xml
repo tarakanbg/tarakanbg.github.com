@@ -2,38 +2,38 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>
-            http://tarakanbg.github.com/blog/2012/04/22/slovom-a-ruby-library-for-verbalizing-currency/
+            http://svilen.rubystudio.net/blog/2012/04/22/slovom-a-ruby-library-for-verbalizing-currency/
         </loc>
         <lastmod>2012-06-30T18:55:37+03:00</lastmod>
     </url>
     <url>
-        <loc>http://tarakanbg.github.com/blog/2012/04/23/gitlab-2-dot-4-first-impressions/</loc>
+        <loc>http://svilen.rubystudio.net/blog/2012/04/23/gitlab-2-dot-4-first-impressions/</loc>
         <lastmod>2012-06-30T14:26:17+03:00</lastmod>
     </url>
     <url>
         <loc>
-            http://tarakanbg.github.com/blog/2012/04/26/rails-installer-update-for-ubuntu-12-dot-04-precise-pangolin/
+            http://svilen.rubystudio.net/blog/2012/04/26/rails-installer-update-for-ubuntu-12-dot-04-precise-pangolin/
         </loc>
         <lastmod>2012-06-30T18:55:27+03:00</lastmod>
     </url>
     <url>
         <loc>
-            http://tarakanbg.github.com/blog/2012/06/30/vasim-metar-a-ruby-gem-for-displaying-vatsim-metars/
+            http://svilen.rubystudio.net/blog/2012/06/30/vasim-metar-a-ruby-gem-for-displaying-vatsim-metars/
         </loc>
         <lastmod>2012-07-02T01:08:11+03:00</lastmod>
     </url>
     <url>
         <loc>
-            http://tarakanbg.github.com/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/
+            http://svilen.rubystudio.net/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/
         </loc>
         <lastmod>2012-07-02T01:14:35+03:00</lastmod>
     </url>
     <url>
-        <loc>http://tarakanbg.github.com/</loc>
+        <loc>http://svilen.rubystudio.net/</loc>
         <lastmod>2012-07-02T01:14:35+03:00</lastmod>
     </url>
     <url>
-        <loc>http://tarakanbg.github.com/blog/archives/</loc>
+        <loc>http://svilen.rubystudio.net/blog/archives/</loc>
         <lastmod>2012-07-02T01:14:35+03:00</lastmod>
     </url>
 </urlset>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: discoveries | Patchwork]]></title>
-  <link href="http://tarakanbg.github.com/blog/categories/discoveries/atom.xml" rel="self"/>
-  <link href="http://tarakanbg.github.com/"/>
-  <updated>2012-07-02T01:16:47+03:00</updated>
-  <id>http://tarakanbg.github.com/</id>
+  <link href="http://svilen.rubystudio.net/blog/categories/discoveries/atom.xml" rel="self"/>
+  <link href="http://svilen.rubystudio.net/"/>
+  <updated>2012-07-02T01:20:18+03:00</updated>
+  <id>http://svilen.rubystudio.net/</id>
   <author>
     <name><![CDATA[Svilen Vassilev]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Gitlab 2.4 first impressions]]></title>
-    <link href="http://tarakanbg.github.com/blog/2012/04/23/gitlab-2-dot-4-first-impressions/"/>
+    <link href="http://svilen.rubystudio.net/blog/2012/04/23/gitlab-2-dot-4-first-impressions/"/>
     <updated>2012-04-23T14:22:00+03:00</updated>
-    <id>http://tarakanbg.github.com/blog/2012/04/23/gitlab-2-dot-4-first-impressions</id>
+    <id>http://svilen.rubystudio.net/blog/2012/04/23/gitlab-2-dot-4-first-impressions</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/5wW8f.png"></p>
 
 <p>Today the great folks at <a href="http://gitlabhq.com/">http://gitlabhq.com/</a> released their

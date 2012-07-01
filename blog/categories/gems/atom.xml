@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: gems | Patchwork]]></title>
-  <link href="http://tarakanbg.github.com/blog/categories/gems/atom.xml" rel="self"/>
-  <link href="http://tarakanbg.github.com/"/>
-  <updated>2012-07-02T01:16:47+03:00</updated>
-  <id>http://tarakanbg.github.com/</id>
+  <link href="http://svilen.rubystudio.net/blog/categories/gems/atom.xml" rel="self"/>
+  <link href="http://svilen.rubystudio.net/"/>
+  <updated>2012-07-02T01:20:18+03:00</updated>
+  <id>http://svilen.rubystudio.net/</id>
   <author>
     <name><![CDATA[Svilen Vassilev]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[GCMapper: A Ruby gem for generating Great Circle maps]]></title>
-    <link href="http://tarakanbg.github.com/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/"/>
+    <link href="http://svilen.rubystudio.net/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/"/>
     <updated>2012-07-02T00:59:00+03:00</updated>
-    <id>http://tarakanbg.github.com/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps</id>
+    <id>http://svilen.rubystudio.net/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/kO2hKm.png"></p>
 
 <p>Yet another gem release announcement: this time it's <a href="https://github.com/tarakanbg/gcmapper">GCMapper</a>,
@@ -112,9 +112,9 @@ code and documentation are <a href="https://github.com/tarakanbg/gcmapper">on gi
   
   <entry>
     <title type="html"><![CDATA[Vasim_metar: a ruby gem for displaying Vatsim metars]]></title>
-    <link href="http://tarakanbg.github.com/blog/2012/06/30/vasim-metar-a-ruby-gem-for-displaying-vatsim-metars/"/>
+    <link href="http://svilen.rubystudio.net/blog/2012/06/30/vasim-metar-a-ruby-gem-for-displaying-vatsim-metars/"/>
     <updated>2012-06-30T18:55:00+03:00</updated>
-    <id>http://tarakanbg.github.com/blog/2012/06/30/vasim-metar-a-ruby-gem-for-displaying-vatsim-metars</id>
+    <id>http://svilen.rubystudio.net/blog/2012/06/30/vasim-metar-a-ruby-gem-for-displaying-vatsim-metars</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/dwb0fm.png"></p>
 
 <p>I just released a simple <a href="https://rubygems.org/gems/vatsim_metar">ruby library</a> for pulling and
@@ -155,9 +155,9 @@ and documentation are <a href="https://github.com/tarakanbg/vatsim_metar">on git
   
   <entry>
     <title type="html"><![CDATA[Slovom - a Ruby library for verbalizing currency]]></title>
-    <link href="http://tarakanbg.github.com/blog/2012/04/22/slovom-a-ruby-library-for-verbalizing-currency/"/>
+    <link href="http://svilen.rubystudio.net/blog/2012/04/22/slovom-a-ruby-library-for-verbalizing-currency/"/>
     <updated>2012-04-22T14:14:00+03:00</updated>
-    <id>http://tarakanbg.github.com/blog/2012/04/22/slovom-a-ruby-library-for-verbalizing-currency</id>
+    <id>http://svilen.rubystudio.net/blog/2012/04/22/slovom-a-ruby-library-for-verbalizing-currency</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/kCMUi.png"></p>
 
 <p>Last night I released a new ruby gem (<a href="https://rubygems.org/gems/slovom">slovom</a>).</p>
