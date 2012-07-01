@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Vasim_metar - a ruby gem for displaying Vatsim metars"
+title: "Vasim_metar: a ruby gem for displaying Vatsim metars"
 date: 2012-06-30 18:55
 comments: true
 categories: [ruby, release, gems, work]
