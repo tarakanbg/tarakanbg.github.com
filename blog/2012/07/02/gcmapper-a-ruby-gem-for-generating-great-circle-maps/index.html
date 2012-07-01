@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Patchwork</title>
+  <title>GCMapper: A Ruby gem for generating Great Circle maps - Patchwork</title>
   <meta name="author" content="Svilen Vassilev">
 
   
@@ -19,7 +19,7 @@ a library for easy generation of Great Circle Map images between 2 or more &hell
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://tarakanbg.github.com/">
+  <link rel="canonical" href="http://tarakanbg.github.com/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -76,15 +76,12 @@ a library for easy generation of Great Circle Map images between 2 or more &hell
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/">GCMapper: A Ruby Gem for Generating Great Circle Maps</a></h1>
+      <h1 class="entry-title">GCMapper: A Ruby Gem for Generating Great Circle Maps</h1>
     
     
       <p class="meta">
@@ -107,7 +104,7 @@ a library for easy generation of Great Circle Map images between 2 or more &hell
   </header>
 
 
-  <div class="entry-content"><p><img class="right" src="http://i.imgur.com/kO2hKm.png"></p>
+<div class="entry-content"><p><img class="right" src="http://i.imgur.com/kO2hKm.png"></p>
 
 <p>Yet another gem release announcement: this time it&#8217;s <a href="https://github.com/tarakanbg/gcmapper">GCMapper</a>,
 a library for easy generation of Great Circle Map images between 2 or more airports. The gem provides
@@ -220,100 +217,16 @@ These options can be combined in any way or omitted entirely. Examples:</p>
 <p>As usual, the packaged gem is available on <a href="https://rubygems.org/gems/gcmapper">rubygems</a> and the source
 code and documentation are <a href="https://github.com/tarakanbg/gcmapper">on github</a>.</p>
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/06/30/vasim-metar-a-ruby-gem-for-displaying-vatsim-metars/">Vasim_metar: A Ruby Gem for Displaying Vatsim Metars</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
   
 
+<span class="byline author vcard">Posted by <span class="fn">Svilen Vassilev</span></span>
 
-<time datetime="2012-06-30T18:55:00+03:00" pubdate data-updated="true">Jun 30<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="right" src="http://i.imgur.com/dwb0fm.png"></p>
-
-<p>I just released a simple <a href="https://rubygems.org/gems/vatsim_metar">ruby library</a> for pulling and
-displaying latest VATSIM metar for a particular station. Can be used with Rails, Sinatra or any
-other kind of ruby application (web or otherwise).</p>
-
-<p>The usage is really simple, here&#8217;s a quote from the README:</p>
-
-<p><em>The <code>.metar</code> method can be applied to a string (or variable containing a string), representing
-a valid ICAO code. Like this:</em></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;EGLL&quot;</span><span class="o">.</span><span class="n">metar</span> <span class="c1"># =&gt; &quot;EGLL 291750Z 22016KT 9999 SCT023 SCT032 18/13 Q1005&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">airport</span> <span class="o">=</span> <span class="s2">&quot;EGLL&quot;</span>
-</span><span class='line'><span class="n">airport</span><span class="o">.</span><span class="n">metar</span> <span class="c1"># =&gt; &quot;EGLL 291750Z 22016KT 9999 SCT023 SCT032 18/13 Q1005&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The input ICAO code is <strong>not case sensitive</strong>, so the following should work as well:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;kjfk&quot;</span><span class="o">.</span><span class="n">metar</span> <span class="c1"># =&gt; &quot;KJFK 291751Z 24016KT 10SM FEW180 SCT250 32/21 A2968 RMK AO2 SLP049 T03170211 10322 20222 58008&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">airport</span> <span class="o">=</span> <span class="s2">&quot;kjfk&quot;</span>
-</span><span class='line'><span class="n">airport</span><span class="o">.</span><span class="n">metar</span> <span class="c1"># =&gt; &quot;KJFK 291751Z 24016KT 10SM FEW180 SCT250 32/21 A2968 RMK AO2 SLP049 T03170211 10322 2022</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Technicalities</h2>
-
-<p>This library augments the default Ruby <code>String</code> class with a method named <code>.metar</code>. It returns a string,
-containing the latest Vatsim METAR. The data is obtained via <code>curl</code> from Vatsim&#8217;s web API, hence the <code>curb</code>
-dependency.</p>
-
-<p>The packaged gem is available on <a href="https://rubygems.org/gems/vatsim_metar">rubygems</a> and the source code
-and documentation are <a href="https://github.com/tarakanbg/vatsim_metar">on github</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/04/26/rails-installer-update-for-ubuntu-12-dot-04-precise-pangolin/">Rails Installer Update for Ubuntu 12.04 (Precise Pangolin)</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
@@ -325,157 +238,48 @@ and documentation are <a href="https://github.com/tarakanbg/vatsim_metar">on git
   
 
 
-<time datetime="2012-04-26T14:30:00+03:00" pubdate data-updated="true">Apr 26<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="right" src="http://i.imgur.com/za1ry.png"></p>
-
-<p>I just updated my simple <a href="https://github.com/tarakanbg/railsinstaller">Rails Installer</a> script for
-compatibility with Ubuntu 12.04. Some extra necessary deb packages were added and the ruby version
-is now bumped to 1.9.3. If you don&#8217;t feel like fiddling with rvm and gemsets, which in my opinion
-is seldom necessary anymore with all the latest bundler improvements, you can just grab the script
-from <a href="https://github.com/tarakanbg/railsinstaller">github</a>.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
+<time datetime="2012-07-02T00:59:00+03:00" pubdate data-updated="true">Jul 2<span>nd</span>, 2012</time>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/04/23/gitlab-2-dot-4-first-impressions/">Gitlab 2.4 First Impressions</a></h1>
-    
-    
-      <p class="meta">
-        
 
-
-
-
-
-
-
-
+<span class="categories">
   
+    <a class='category' href='/blog/categories/gems/'>gems</a>, <a class='category' href='/blog/categories/release/'>release</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/work/'>work</a>
+  
+</span>
 
 
-<time datetime="2012-04-23T14:22:00+03:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2012</time>
-        
-      </p>
+    </p>
     
-  </header>
-
-
-  <div class="entry-content"><p><img class="right" src="http://i.imgur.com/5wW8f.png"></p>
-
-<p>Today the great folks at <a href="http://gitlabhq.com/">http://gitlabhq.com/</a> released their
-<a href="http://blog.gitlabhq.com/gitlab-v2-4-released/">version 2.4</a> and it&#8217;s great to see the project
-going strong and getting more mature and more powerful with each new release. They&#8217;re also keeping
-the original promise of monthly releases and this is a very tight schedule, considering how much work
-goes into each  new version. This one for example has more than 200 commits.</p>
-
-<p>So here are my thought&#8217;s, focusing mostly on the deficiencies, as those are getting fewer and fewer
-with each release :).</p>
-
-<p>This release introduces yet another visual redesign, not as fundamental as the previous one,
-but rather an incremental and quite welcome polish and enhancement, harnessing the power of twitter
-bootstrap and the responsive layout design.</p>
-
-<p>The milestones feature is necessary and welcome as well, however not perfect in its current
-implementation. For one thing we need to be able to see at a glance which milestone do the issues
-belong to in the issues list. Also we need multi-edit on issues to be able to mass-assign/reassign
-milestones, assignees, etc.</p>
-
-<p>The activity timelines, both global and scoped through a particular project are very handy for
-keeping track of what all the other members are doing, however they&#8217;re missing an RSS feed and
-that in a Rails app is easy to attach.</p>
-
-<p>The merge/pull request functionality is great and in the code sections the only thing I&#8217;m really
-missing is a functionality replicating Github&#8217;s &#8220;blame&#8221; view.</p>
-
-<p>The admin interface has evolved for the better, but something I&#8217;m missing here is the ability
-to fine-tune user permissions, perhaps custom roles with the possibility to include/exclude
-any of the currently existing permissions on a per-role basis. For example what is the logic
-behind a &#8220;developer&#8221; being able to open issues, but only close their own ones? It&#8217;s too restrictive
-if only a &#8220;master&#8221; can resolve issues - considering all the powers a master has, I don&#8217;t want to be
-forced to assign this role to anyone whom I want to work on and close issues.</p>
-
-<p>But these are all minor things that will undoubtedly be smoothed out in the future and even now
-it&#8217;s a pleasure to use gitlab in production on a daily basis. Looking forward to version 3, which
-should come in May and bring even more excitement!</p>
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tarakanbg.github.com/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/" data-via="svilenv" data-counturl="http://tarakanbg.github.com/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
 </div>
-  
-  
 
-
-    </article>
-  
-  
-    <article>
+    
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/04/22/slovom-a-ruby-library-for-verbalizing-currency/">Slovom - a Ruby Library for Verbalizing Currency</a></h1>
-    
-    
-      <p class="meta">
-        
+        <a class="basic-alignment left" href="/blog/2012/06/30/vasim-metar-a-ruby-gem-for-displaying-vatsim-metars/" title="Previous Post: Vasim_metar: a ruby gem for displaying Vatsim metars">&laquo; Vasim_metar: a ruby gem for displaying Vatsim metars</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-22T14:14:00+03:00" pubdate data-updated="true">Apr 22<span>nd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="right" src="http://i.imgur.com/kCMUi.png"></p>
-
-<p>Last night I released a new ruby gem (<a href="https://rubygems.org/gems/slovom">slovom</a>).</p>
-
-<p>It converts decimal currency numbers into text in Bulgarian language, which can be useful in
-financial applications, accounting documents, and all other instances requiring currency
-verbalization. It handles the specifics of verbally presenting numbers and prices in Bulgarian,
-including grammatical irregularities, differences due to gender, singularity and plurality
-and the logic of using or omitting the &#8220;and&#8221; conjunction from the resulting string.</p>
-
-<p>It&#8217;s extracted from a pawnbroker/pawnshop rails application which I&#8217;m currently working on,
-called Lombard, to be released as a service in the coming months.</p>
-
-<p>It&#8217;s a bit surprising to see some 50 downloads of the gem in less than a day, hopefully
-other Bulgarian ruby developers will find it useful.</p>
-
-<p>Here&#8217;s the <a href="https://github.com/tarakanbg/slovom">github link</a> for convenience.</p>
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
-  
-  
+  </section>
 
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
 </div>
+
 <aside class="sidebar">
   
     <section>
@@ -508,7 +312,7 @@ other Bulgarian ruby developers will find it useful.</p>
 <section>
   <h1>Latest Tweets</h1>
   <ul id="tweets">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   <script type="text/javascript">
     $.domReady(function(){
@@ -525,7 +329,7 @@ other Bulgarian ruby developers will find it useful.</p>
 <section>
   <h1>GitHub Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   
   <a href="https://github.com/tarakanbg">@tarakanbg</a> on GitHub
@@ -567,6 +371,7 @@ other Bulgarian ruby developers will find it useful.</p>
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -581,7 +386,10 @@ other Bulgarian ruby developers will find it useful.</p>
       var disqus_shortname = 'svilenblog';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://tarakanbg.github.com/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/';
+        var disqus_url = 'http://tarakanbg.github.com/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

@@ -4,7 +4,7 @@
   <title><![CDATA[Patchwork]]></title>
   <link href="http://tarakanbg.github.com/atom.xml" rel="self"/>
   <link href="http://tarakanbg.github.com/"/>
-  <updated>2012-06-30T19:05:29+03:00</updated>
+  <updated>2012-07-02T01:16:47+03:00</updated>
   <id>http://tarakanbg.github.com/</id>
   <author>
     <name><![CDATA[Svilen Vassilev]]></name>
@@ -14,7 +14,127 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Vasim_metar - a ruby gem for displaying Vatsim metars]]></title>
+    <title type="html"><![CDATA[GCMapper: A Ruby gem for generating Great Circle maps]]></title>
+    <link href="http://tarakanbg.github.com/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/"/>
+    <updated>2012-07-02T00:59:00+03:00</updated>
+    <id>http://tarakanbg.github.com/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/kO2hKm.png"></p>
+
+<p>Yet another gem release announcement: this time it&#8217;s <a href="https://github.com/tarakanbg/gcmapper">GCMapper</a>,
+a library for easy generation of Great Circle Map images between 2 or more airports. The gem provides
+an API for constructing the image URLs, the maps themselves are pulled
+from <a href="http://www.gcmap.com/">gcmap.com</a>.</p>
+
+<p>Here&#8217;s a quote from the documentation:</p>
+
+<p>The <code>.gcmap</code> method can be applied to a string (or variable containing a string), representing a valid route
+between 2 or more airports (ICAO or IATA codes), connected with dashes, like this: <code>EGLL-LOWI</code> or
+<code>LFST-LSZH-LBSF</code>. Here are some examples:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># An example of normal route:</span>
+</span><span class='line'><span class="n">route</span> <span class="o">=</span> <span class="s2">&quot;EGLL-LOWI&quot;</span>
+</span><span class='line'><span class="n">route</span><span class="o">.</span><span class="n">gcmap</span> <span class="c1"># =&gt; Returns an image map URL for the route EGLL-LOWI</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># An exampmle of layover route:</span>
+</span><span class='line'><span class="n">another_route</span> <span class="o">=</span> <span class="s2">&quot;LFST-LSZH-LBSF&quot;</span>
+</span><span class='line'><span class="n">another_route</span><span class="o">.</span><span class="n">gcmap</span> <span class="c1"># =&gt; Returns an image map URL for the layover route LFST-LSZH-LBSF</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># The method can be applied directly to a string:</span>
+</span><span class='line'><span class="s2">&quot;EGLL-LOWI&quot;</span><span class="o">.</span><span class="n">gcmap</span> <span class="c1"># =&gt; Returns an image map URL for the route EGLL-LOWI</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># It&#39;s not case sensitive:</span>
+</span><span class='line'><span class="s2">&quot;egll-lowi&quot;</span><span class="o">.</span><span class="n">gcmap</span> <span class="c1"># =&gt; Returns an image map URL for the route EGLL-LOWI</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The resulting image size and look can be customized by passing an optional hash of arguments to the
+<code>.gcmap</code> method. Customizable attributes include <em>width, height</em> and <em>terrain</em> (toggle satelite terrain overlay).
+These options can be combined in any way or omitted entirely. Examples:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Passing width only (default is 720px):</span>
+</span><span class='line'><span class="n">route</span> <span class="o">=</span> <span class="s2">&quot;egll-lowi&quot;</span>
+</span><span class='line'><span class="n">route</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:width</span> <span class="o">=&gt;</span> <span class="s2">&quot;600&quot;</span><span class="p">)</span> <span class="c1"># =&gt; Returns an image map URL with width set to 600px</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Passing height only (default is 360px):</span>
+</span><span class='line'><span class="n">route</span> <span class="o">=</span> <span class="s2">&quot;egll-lowi&quot;</span>
+</span><span class='line'><span class="n">route</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:height</span> <span class="o">=&gt;</span> <span class="mi">400</span><span class="p">)</span>  <span class="c1"># =&gt; Returns an image map URL with height set to 400px</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Passing width and height:</span>
+</span><span class='line'><span class="s2">&quot;egll-lowi&quot;</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:width</span> <span class="o">=&gt;</span> <span class="s2">&quot;800&quot;</span><span class="p">,</span> <span class="ss">:height</span> <span class="o">=&gt;</span> <span class="s2">&quot;400&quot;</span><span class="p">)</span> <span class="c1"># =&gt; Returns an image map URL with width 800px and height 400px</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Enabling terrain overlay:</span>
+</span><span class='line'><span class="n">route</span> <span class="o">=</span> <span class="s2">&quot;egll-lowi&quot;</span>
+</span><span class='line'><span class="n">route</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:terrain</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span> <span class="c1"># =&gt; Returns an image map URL with terrain overlay enabled</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Setting width, height and enabling terrain overlay:</span>
+</span><span class='line'><span class="s2">&quot;egll-lowi&quot;</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:width</span> <span class="o">=&gt;</span> <span class="mi">800</span><span class="p">,</span> <span class="ss">:height</span> <span class="o">=&gt;</span> <span class="mi">400</span><span class="p">,</span> <span class="ss">:terrain</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span> <span class="c1"># =&gt; Returns an image map URL with set width, height and terrain</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally, here&#8217;s an example of how to use the gem in a Rails application:</p>
+
+<p><em>In your controller:</em></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@route</span> <span class="o">=</span> <span class="s2">&quot;egll-lowi&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>In your view:</em></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%=</span> <span class="n">image_tag</span> <span class="vi">@route</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:width</span> <span class="o">=&gt;</span> <span class="s2">&quot;600&quot;</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Notes:</h4>
+
+<ul>
+<li>the <code>route</code> string can be constructed from either ICAO or IATA airport codes; both types are recognized</li>
+<li>the <code>route</code> string is <strong>not case sensitive</strong>, so for example <code>lgav-lqsa</code> will be recognized as well</li>
+<li>layover routes that chain multiple airports (more than 2) are also supported</li>
+<li>default image parameters are: width 720px, width: 360px, terrain not shown</li>
+<li>when passing the <code>width</code> and <code>height</code> hash options the values can be put in quotes or not, either way works</li>
+</ul>
+
+
+<p>As usual, the packaged gem is available on <a href="https://rubygems.org/gems/gcmapper">rubygems</a> and the source
+code and documentation are <a href="https://github.com/tarakanbg/gcmapper">on github</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Vasim_metar: a ruby gem for displaying Vatsim metars]]></title>
     <link href="http://tarakanbg.github.com/blog/2012/06/30/vasim-metar-a-ruby-gem-for-displaying-vatsim-metars/"/>
     <updated>2012-06-30T18:55:00+03:00</updated>
     <id>http://tarakanbg.github.com/blog/2012/06/30/vasim-metar-a-ruby-gem-for-displaying-vatsim-metars</id>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: work | Patchwork]]></title>
   <link href="http://tarakanbg.github.com/blog/categories/work/atom.xml" rel="self"/>
   <link href="http://tarakanbg.github.com/"/>
-  <updated>2012-06-30T19:05:29+03:00</updated>
+  <updated>2012-07-02T01:16:47+03:00</updated>
   <id>http://tarakanbg.github.com/</id>
   <author>
     <name><![CDATA[Svilen Vassilev]]></name>
@@ -14,7 +14,104 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Vasim_metar - a ruby gem for displaying Vatsim metars]]></title>
+    <title type="html"><![CDATA[GCMapper: A Ruby gem for generating Great Circle maps]]></title>
+    <link href="http://tarakanbg.github.com/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/"/>
+    <updated>2012-07-02T00:59:00+03:00</updated>
+    <id>http://tarakanbg.github.com/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/kO2hKm.png"></p>
+
+<p>Yet another gem release announcement: this time it's <a href="https://github.com/tarakanbg/gcmapper">GCMapper</a>,
+a library for easy generation of Great Circle Map images between 2 or more airports. The gem provides
+an API for constructing the image URLs, the maps themselves are pulled
+from <a href="http://www.gcmap.com/">gcmap.com</a>.</p>
+
+<p>Here's a quote from the documentation:</p>
+
+<p>The <code>.gcmap</code> method can be applied to a string (or variable containing a string), representing a valid route
+between 2 or more airports (ICAO or IATA codes), connected with dashes, like this: <code>EGLL-LOWI</code> or
+<code>LFST-LSZH-LBSF</code>. Here are some examples:</p>
+
+<p>```ruby</p>
+
+<h1>An example of normal route:</h1>
+
+<p>route = "EGLL-LOWI"
+route.gcmap # => Returns an image map URL for the route EGLL-LOWI</p>
+
+<h1>An exampmle of layover route:</h1>
+
+<p>another_route = "LFST-LSZH-LBSF"
+another_route.gcmap # => Returns an image map URL for the layover route LFST-LSZH-LBSF</p>
+
+<h1>The method can be applied directly to a string:</h1>
+
+<p>"EGLL-LOWI".gcmap # => Returns an image map URL for the route EGLL-LOWI</p>
+
+<h1>It's not case sensitive:</h1>
+
+<p>"egll-lowi".gcmap # => Returns an image map URL for the route EGLL-LOWI
+```</p>
+
+<p>The resulting image size and look can be customized by passing an optional hash of arguments to the
+<code>.gcmap</code> method. Customizable attributes include <em>width, height</em> and <em>terrain</em> (toggle satelite terrain overlay).
+These options can be combined in any way or omitted entirely. Examples:</p>
+
+<p>```ruby</p>
+
+<h1>Passing width only (default is 720px):</h1>
+
+<p>route = "egll-lowi"
+route.gcmap(:width => "600") # => Returns an image map URL with width set to 600px</p>
+
+<h1>Passing height only (default is 360px):</h1>
+
+<p>route = "egll-lowi"
+route.gcmap(:height => 400)  # => Returns an image map URL with height set to 400px</p>
+
+<h1>Passing width and height:</h1>
+
+<p>"egll-lowi".gcmap(:width => "800", :height => "400") # => Returns an image map URL with width 800px and height 400px</p>
+
+<h1>Enabling terrain overlay:</h1>
+
+<p>route = "egll-lowi"
+route.gcmap(:terrain => true) # => Returns an image map URL with terrain overlay enabled</p>
+
+<h1>Setting width, height and enabling terrain overlay:</h1>
+
+<p>"egll-lowi".gcmap(:width => 800, :height => 400, :terrain => true) # => Returns an image map URL with set width, height and terrain
+```</p>
+
+<p>Finally, here's an example of how to use the gem in a Rails application:</p>
+
+<p><em>In your controller:</em>
+<code>ruby
+@route = "egll-lowi"
+</code></p>
+
+<p><em>In your view:</em>
+<code>erb
+&lt;%= image_tag @route.gcmap(:width =&gt; "600") %&gt;
+</code></p>
+
+<h4>Notes:</h4>
+
+<ul>
+<li>the <code>route</code> string can be constructed from either ICAO or IATA airport codes; both types are recognized</li>
+<li>the <code>route</code> string is <strong>not case sensitive</strong>, so for example <code>lgav-lqsa</code> will be recognized as well</li>
+<li>layover routes that chain multiple airports (more than 2) are also supported</li>
+<li>default image parameters are: width 720px, width: 360px, terrain not shown</li>
+<li>when passing the <code>width</code> and <code>height</code> hash options the values can be put in quotes or not, either way works</li>
+</ul>
+
+
+<p>As usual, the packaged gem is available on <a href="https://rubygems.org/gems/gcmapper">rubygems</a> and the source
+code and documentation are <a href="https://github.com/tarakanbg/gcmapper">on github</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Vasim_metar: a ruby gem for displaying Vatsim metars]]></title>
     <link href="http://tarakanbg.github.com/blog/2012/06/30/vasim-metar-a-ruby-gem-for-displaying-vatsim-metars/"/>
     <updated>2012-06-30T18:55:00+03:00</updated>
     <id>http://tarakanbg.github.com/blog/2012/06/30/vasim-metar-a-ruby-gem-for-displaying-vatsim-metars</id>
