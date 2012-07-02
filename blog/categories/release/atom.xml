@@ -4,7 +4,7 @@
   <title><![CDATA[Category: release | Patchwork]]></title>
   <link href="http://svilen.rubystudio.net/blog/categories/release/atom.xml" rel="self"/>
   <link href="http://svilen.rubystudio.net/"/>
-  <updated>2012-07-02T01:20:18+03:00</updated>
+  <updated>2012-07-02T16:25:07+03:00</updated>
   <id>http://svilen.rubystudio.net/</id>
   <author>
     <name><![CDATA[Svilen Vassilev]]></name>
@@ -12,6 +12,43 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[GCMapper updated with new features]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/07/02/gcmapper-updated-with-new-features/"/>
+    <updated>2012-07-02T16:18:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/07/02/gcmapper-updated-with-new-features</id>
+    <content type="html"><![CDATA[<p>It looks like <a href="https://rubygems.org/gems/gcmapper">gcmapper</a> got some traction after its
+<a href="/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/">initial release</a>,
+so after listening to some feedback I released a new version with the following changes:</p>
+
+<ul>
+<li>[Enhancement] Maps now show the user input code (ICAO or IATA) instead of ICAO only</li>
+<li>[Feature] New hash option <code>:city</code> to toggle city labels on or off (see <a href="https://github.com/tarakanbg/gcmapper#usage">Readme</a>)</li>
+<li>[Feature] New hash option <code>:airport_name</code> to toggle airport name labels on or off (see <a href="https://github.com/tarakanbg/gcmapper#usage">Readme</a>)</li>
+</ul>
+
+
+<p>Some examples of the new options:</p>
+
+<p>```ruby</p>
+
+<h1>Setting width, height, enabling terrain overlay and disabling the city labels:</h1>
+
+<p>"egll-lowi".gcmap(:width => 800, :height => 400, :terrain => true, :city => false) # => Returns an image map URL with set width, height and terrain, with city labels disabled</p>
+
+<h1>Setting the map to display the airports' names instead of the ICAO/IATA codes</h1>
+
+<p>route = "egll-lowi"
+route.gcmap(:airport_name => true) # => Returns an image map URL with airport names displayed</p>
+
+<h1>Setting the map to display the airports' names and a terrain overlay</h1>
+
+<p>route = "egll-lowi"
+route.gcmap(:airport_name => true, :terrain => true) # => Returns an image map URL with airport names and terrain displayed
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[GCMapper: A Ruby gem for generating Great Circle maps]]></title>

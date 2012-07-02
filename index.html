@@ -9,8 +9,9 @@
   <meta name="author" content="Svilen Vassilev">
 
   
-  <meta name="description" content="Yet another gem release announcement: this time it&#8217;s GCMapper,
-a library for easy generation of Great Circle Map images between 2 or more &hellip;">
+  <meta name="description" content="It looks like gcmapper got some traction after its
+initial release,
+so after listening to some feedback I released a new version with the following &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +79,76 @@ a library for easy generation of Great Circle Map images between 2 or more &hell
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/02/gcmapper-updated-with-new-features/">GCMapper Updated With New Features</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-02T16:18:00+03:00" pubdate data-updated="true">Jul 2<span>nd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>It looks like <a href="https://rubygems.org/gems/gcmapper">gcmapper</a> got some traction after its
+<a href="/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/">initial release</a>,
+so after listening to some feedback I released a new version with the following changes:</p>
+
+<ul>
+<li>[Enhancement] Maps now show the user input code (ICAO or IATA) instead of ICAO only</li>
+<li>[Feature] New hash option <code>:city</code> to toggle city labels on or off (see <a href="https://github.com/tarakanbg/gcmapper#usage">Readme</a>)</li>
+<li>[Feature] New hash option <code>:airport_name</code> to toggle airport name labels on or off (see <a href="https://github.com/tarakanbg/gcmapper#usage">Readme</a>)</li>
+</ul>
+
+
+<p>Some examples of the new options:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Setting width, height, enabling terrain overlay and disabling the city labels:</span>
+</span><span class='line'><span class="s2">&quot;egll-lowi&quot;</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:width</span> <span class="o">=&gt;</span> <span class="mi">800</span><span class="p">,</span> <span class="ss">:height</span> <span class="o">=&gt;</span> <span class="mi">400</span><span class="p">,</span> <span class="ss">:terrain</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">:city</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">)</span> <span class="c1"># =&gt; Returns an image map URL with set width, height and terrain, with city labels disabled</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Setting the map to display the airports&#39; names instead of the ICAO/IATA codes</span>
+</span><span class='line'><span class="n">route</span> <span class="o">=</span> <span class="s2">&quot;egll-lowi&quot;</span>
+</span><span class='line'><span class="n">route</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:airport_name</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span> <span class="c1"># =&gt; Returns an image map URL with airport names displayed</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Setting the map to display the airports&#39; names and a terrain overlay</span>
+</span><span class='line'><span class="n">route</span> <span class="o">=</span> <span class="s2">&quot;egll-lowi&quot;</span>
+</span><span class='line'><span class="n">route</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:airport_name</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">:terrain</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span> <span class="c1"># =&gt; Returns an image map URL with airport names and terrain displayed</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -483,6 +554,10 @@ other Bulgarian ruby developers will find it useful.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/07/02/gcmapper-updated-with-new-features/">GCMapper updated with new features</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/">GCMapper: A Ruby gem for generating Great Circle maps</a>
       </li>
     
@@ -496,10 +571,6 @@ other Bulgarian ruby developers will find it useful.</p>
     
       <li class="post">
         <a href="/blog/2012/04/23/gitlab-2-dot-4-first-impressions/">Gitlab 2.4 first impressions</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/04/22/slovom-a-ruby-library-for-verbalizing-currency/">Slovom - a Ruby library for verbalizing currency</a>
       </li>
     
   </ul>
