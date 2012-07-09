@@ -9,8 +9,8 @@
   <meta name="author" content="Svilen Vassilev">
 
   
-  <meta name="description" content="I stumbled upon a nicely written entry-level tutorial about nokogiri, giving a clean,
-plain language explanation of the basic gem functionality and &hellip;">
+  <meta name="description" content="New release: notams, gem for retrieving the currently active NOTAMs
+for an airport or a region. Supports multiple airports/regions in one request. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +78,73 @@ plain language explanation of the basic gem functionality and &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/09/notams-a-ruby-gem-for-retrieving-notams/">Notams: A Ruby Gem for Retrieving&#8230; Well, NOTAMs</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-09T18:12:00+03:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="right" src="http://i.imgur.com/8sdZGm.png"></p>
+
+<p>New release: <a href="https://rubygems.org/gems/notams">notams</a>, gem for retrieving the currently active NOTAMs
+for an airport or a region. Supports multiple airports/regions in one request. Pulls data from
+<a href="http://www.faa.gov/">FAA website</a>. Depends on <a href="http://nokogiri.org/">nokogiri</a> for the heavy lifting.</p>
+
+<p>Here’s a quote from the documentation:</p>
+
+<p>The <code>.notams</code> method can be applied to any string (or variable containing a string), representing a valid
+ICAO code of an airport or FIR, or a comma-separated list of airports/regions. It will return an array,
+containing all the <strong>currently active</strong> NOTAMs for your selection. You can loop through the array to display or
+parse individual notams.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">icao</span> <span class="o">=</span> <span class="s2">&quot;lowi&quot;</span>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">notams</span> <span class="c1"># =&gt; returns an array containing all NOTAMs for Innsbruck airport</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&quot;lowi&quot;</span><span class="o">.</span><span class="n">notams</span> <span class="c1"># =&gt; same as above</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">icao</span> <span class="o">=</span> <span class="s2">&quot;lqsa,lqsb&quot;</span>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">notams</span> <span class="c1"># =&gt; returns an array containing all NOTAMs for Sarajevo Airport and Bosnia and Herzegovina FIR</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As usual, the packaged gem is available on <a href="https://rubygems.org/gems/notams">rubygems</a> and the source
+code and documentation are <a href="https://github.com/tarakanbg/notams">on github</a>.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -689,6 +756,10 @@ other Bulgarian ruby developers will find it useful.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/07/09/notams-a-ruby-gem-for-retrieving-notams/">notams: a ruby gem for retrieving&#8230; well, NOTAMs</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/07/09/nice-nokogiri-tutorial/">Nice Nokogiri tutorial</a>
       </li>
     
@@ -702,10 +773,6 @@ other Bulgarian ruby developers will find it useful.</p>
     
       <li class="post">
         <a href="/blog/2012/07/02/gcmapper-updated-with-new-features/">GCMapper updated with new features</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/">GCMapper: A Ruby gem for generating Great Circle maps</a>
       </li>
     
   </ul>
