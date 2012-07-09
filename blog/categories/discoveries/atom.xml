@@ -4,7 +4,7 @@
   <title><![CDATA[Category: discoveries | Patchwork]]></title>
   <link href="http://svilen.rubystudio.net/blog/categories/discoveries/atom.xml" rel="self"/>
   <link href="http://svilen.rubystudio.net/"/>
-  <updated>2012-07-08T14:55:05+03:00</updated>
+  <updated>2012-07-09T16:06:20+03:00</updated>
   <id>http://svilen.rubystudio.net/</id>
   <author>
     <name><![CDATA[Svilen Vassilev]]></name>
@@ -12,6 +12,19 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Great site for 3D panoramas]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/07/09/great-site-for-3d-panoramas/"/>
+    <updated>2012-07-09T15:43:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/07/09/great-site-for-3d-panoramas</id>
+    <content type="html"><![CDATA[<p><img class="center" src="http://i.imgur.com/JW921h.png"></p>
+
+<p>Discovered on the web: <a href="http://www.airpano.com/">Airpano.com</a> a great site for 3D aerial panoramas and virtual
+tours. Plenty of gorgeous places and landmarks from all over the world, nice theme music, intuitive mouse controls.
+One can spend an entire day in virtual travelling and day-dreaming.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Gitlab 2.4 first impressions]]></title>

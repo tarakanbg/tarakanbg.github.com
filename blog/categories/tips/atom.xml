@@ -4,7 +4,7 @@
   <title><![CDATA[Category: tips | Patchwork]]></title>
   <link href="http://svilen.rubystudio.net/blog/categories/tips/atom.xml" rel="self"/>
   <link href="http://svilen.rubystudio.net/"/>
-  <updated>2012-07-08T14:55:05+03:00</updated>
+  <updated>2012-07-09T16:06:20+03:00</updated>
   <id>http://svilen.rubystudio.net/</id>
   <author>
     <name><![CDATA[Svilen Vassilev]]></name>
@@ -12,6 +12,23 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Nice Nokogiri tutorial]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/07/09/nice-nokogiri-tutorial/"/>
+    <updated>2012-07-09T15:45:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/07/09/nice-nokogiri-tutorial</id>
+    <content type="html"><![CDATA[<p>I stumbled upon a nicely written entry-level tutorial about <a href="http://nokogiri.org/">nokogiri</a>, giving a clean,
+plain language explanation of the basic gem functionality and methods. The article is part of
+<a href="http://ruby.bastardsbook.com/">The Bastards Book of Ruby</a>.</p>
+
+<p><img class="center" src="http://i.imgur.com/4t9wvl.png"></p>
+
+<p><blockquote><p>We... saw how to use the web inspector to intercept raw data files. This allows us to read from them directly rather than deal with the data in HTML format... But there will be many instances when you'll need to parse raw HTML. The Ruby gem Nokogiri makes reading raw HTML as easy as crack-parsed XML and JSON.</p><footer><strong>Dan Nguyen</strong> <cite><a href='http://ruby.bastardsbook.com/chapters/html-parsing/'>Parsing HTML With Nokogiri</a></cite></footer></blockquote></p>
+
+<p><a href="http://ruby.bastardsbook.com/chapters/html-parsing/">Read the entire post here</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android: fixing the Google Play Store 'insufficient space' error]]></title>

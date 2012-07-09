@@ -5,13 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>GCMapper updated with new features - Patchwork</title>
+  <title>Nice Nokogiri tutorial - Patchwork</title>
   <meta name="author" content="Svilen Vassilev">
 
   
-  <meta name="description" content="It looks like gcmapper got some traction after its
-initial release,
-so after listening to some feedback I released a new version with the following &hellip;">
+  <meta name="description" content="I stumbled upon a nicely written entry-level tutorial about nokogiri, giving a clean,
+plain language explanation of the basic gem functionality and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +19,7 @@ so after listening to some feedback I released a new version with the following 
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://svilen.rubystudio.net/blog/2012/07/02/gcmapper-updated-with-new-features/">
+  <link rel="canonical" href="http://svilen.rubystudio.net/blog/2012/07/09/nice-nokogiri-tutorial/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -82,7 +81,7 @@ so after listening to some feedback I released a new version with the following 
   
   <header>
     
-      <h1 class="entry-title">GCMapper Updated With New Features</h1>
+      <h1 class="entry-title">Nice Nokogiri Tutorial</h1>
     
     
       <p class="meta">
@@ -98,48 +97,23 @@ so after listening to some feedback I released a new version with the following 
   
 
 
-<time datetime="2012-07-02T16:18:00+03:00" pubdate data-updated="true">Jul 2<span>nd</span>, 2012</time>
+<time datetime="2012-07-09T15:45:00+03:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>It looks like <a href="https://rubygems.org/gems/gcmapper">gcmapper</a> got some traction after its
-<a href="/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/">initial release</a>,
-so after listening to some feedback I released a new version with the following changes:</p>
+<div class="entry-content"><p>I stumbled upon a nicely written entry-level tutorial about <a href="http://nokogiri.org/">nokogiri</a>, giving a clean,
+plain language explanation of the basic gem functionality and methods. The article is part of
+<a href="http://ruby.bastardsbook.com/">The Bastards Book of Ruby</a>.</p>
 
-<ul>
-<li>[Enhancement] Maps now show the user input code (ICAO or IATA) instead of ICAO only</li>
-<li>[Feature] New hash option <code>:city</code> to toggle city labels on or off (see <a href="https://github.com/tarakanbg/gcmapper#usage">Readme</a>)</li>
-<li>[Feature] New hash option <code>:airport_name</code> to toggle airport name labels on or off (see <a href="https://github.com/tarakanbg/gcmapper#usage">Readme</a>)</li>
-</ul>
+<p><img class="center" src="http://i.imgur.com/4t9wvl.png"></p>
+
+<blockquote><p>We&#8230; saw how to use the web inspector to intercept raw data files. This allows us to read from them directly rather than deal with the data in HTML format&#8230; But there will be many instances when you&#8217;ll need to parse raw HTML. The Ruby gem Nokogiri makes reading raw HTML as easy as crack-parsed XML and JSON.</p><footer><strong>Dan Nguyen</strong> <cite><a href='http://ruby.bastardsbook.com/chapters/html-parsing/'>Parsing HTML With Nokogiri</a></cite></footer></blockquote>
 
 
-<p>Some examples of the new options:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Setting width, height, enabling terrain overlay and disabling the city labels:</span>
-</span><span class='line'><span class="s2">&quot;egll-lowi&quot;</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:width</span> <span class="o">=&gt;</span> <span class="mi">800</span><span class="p">,</span> <span class="ss">:height</span> <span class="o">=&gt;</span> <span class="mi">400</span><span class="p">,</span> <span class="ss">:terrain</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">:city</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">)</span> <span class="c1"># =&gt; Returns an image map URL with set width, height and terrain, with city labels disabled</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Setting the map to display the airports&#39; names instead of the ICAO/IATA codes</span>
-</span><span class='line'><span class="n">route</span> <span class="o">=</span> <span class="s2">&quot;egll-lowi&quot;</span>
-</span><span class='line'><span class="n">route</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:airport_name</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span> <span class="c1"># =&gt; Returns an image map URL with airport names displayed</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Setting the map to display the airports&#39; names and a terrain overlay</span>
-</span><span class='line'><span class="n">route</span> <span class="o">=</span> <span class="s2">&quot;egll-lowi&quot;</span>
-</span><span class='line'><span class="n">route</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:airport_name</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">:terrain</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span> <span class="c1"># =&gt; Returns an image map URL with airport names and terrain displayed</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<p><a href="http://ruby.bastardsbook.com/chapters/html-parsing/">Read the entire post here</a></p>
 </div>
 
 
@@ -162,12 +136,12 @@ so after listening to some feedback I released a new version with the following 
   
 
 
-<time datetime="2012-07-02T16:18:00+03:00" pubdate data-updated="true">Jul 2<span>nd</span>, 2012</time>
+<time datetime="2012-07-09T15:45:00+03:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/gems/'>gems</a>, <a class='category' href='/blog/categories/release/'>release</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/work/'>work</a>
+    <a class='category' href='/blog/categories/quotes/'>quotes</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/tips/'>tips</a>
   
 </span>
 
@@ -176,7 +150,7 @@ so after listening to some feedback I released a new version with the following 
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://svilen.rubystudio.net/blog/2012/07/02/gcmapper-updated-with-new-features/" data-via="svilenv" data-counturl="http://svilen.rubystudio.net/blog/2012/07/02/gcmapper-updated-with-new-features/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://svilen.rubystudio.net/blog/2012/07/09/nice-nokogiri-tutorial/" data-via="svilenv" data-counturl="http://svilen.rubystudio.net/blog/2012/07/09/nice-nokogiri-tutorial/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -189,10 +163,8 @@ so after listening to some feedback I released a new version with the following 
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/" title="Previous Post: GCMapper: A Ruby gem for generating Great Circle maps">&laquo; GCMapper: A Ruby gem for generating Great Circle maps</a>
+        <a class="basic-alignment left" href="/blog/2012/07/09/great-site-for-3d-panoramas/" title="Previous Post: Great site for 3D panoramas">&laquo; Great site for 3D panoramas</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/07/08/android-fixing-the-google-play-store-insufficient-space-error/" title="Next Post: Android: fixing the Google Play Store 'insufficient space' error">Android: fixing the Google Play Store 'insufficient space' error &raquo;</a>
       
     </p>
   </footer>
@@ -313,8 +285,8 @@ so after listening to some feedback I released a new version with the following 
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://svilen.rubystudio.net/blog/2012/07/02/gcmapper-updated-with-new-features/';
-        var disqus_url = 'http://svilen.rubystudio.net/blog/2012/07/02/gcmapper-updated-with-new-features/';
+        var disqus_identifier = 'http://svilen.rubystudio.net/blog/2012/07/09/nice-nokogiri-tutorial/';
+        var disqus_url = 'http://svilen.rubystudio.net/blog/2012/07/09/nice-nokogiri-tutorial/';
         var disqus_script = 'embed.js';
       
     (function () {
