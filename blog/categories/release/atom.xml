@@ -4,7 +4,7 @@
   <title><![CDATA[Category: release | Patchwork]]></title>
   <link href="http://svilen.rubystudio.net/blog/categories/release/atom.xml" rel="self"/>
   <link href="http://svilen.rubystudio.net/"/>
-  <updated>2012-07-20T18:43:03+03:00</updated>
+  <updated>2012-07-22T19:26:26+03:00</updated>
   <id>http://svilen.rubystudio.net/</id>
   <author>
     <name><![CDATA[Svilen Vassilev]]></name>
@@ -12,6 +12,68 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[vatsim_online updates]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/07/22/vatsim-online-updates/"/>
+    <updated>2012-07-22T19:17:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/07/22/vatsim-online-updates</id>
+    <content type="html"><![CDATA[<p><a href="https://rubygems.org/gems/vatsim_online">vatsim_online</a> gem has been upated
+twice with new features and API changes, I apologize for the inconvenience to
+the early adopters. Here's the changelog:</p>
+
+<h3>v. 0.3 - 22 July 2012</h3>
+
+<ul>
+<li>The hash returned by the <code>vatsim_online</code> method now includes 2 new arrays:
+<code>arrivals</code> and <code>departures</code>. These two are returned separately for convenience,
+in case you want to loop through them separately. The <code>pilots</code> array return is
+unchanged and contains all arrivals and departures.</li>
+<li>New station attributes: <code>latitude</code>, <code>longitude</code></li>
+<li>Improved <code>UTF-8</code> conversion process</li>
+</ul>
+
+
+<p>So the method return now looks like this:</p>
+
+<p>```ruby
+icao.vatsim_online # => {:atc => [a1, a2, a3 ...], :pilots => [p1, p2, p3, p4 ...],</p>
+
+<pre><code>               #    :departures =&gt; [p1, p4 ...], :arrivals =&gt; [p2, p3...]}
+</code></pre>
+
+<p>icao.vatsim_online[:atc] #=> [a1, a2, a3 ...]
+icao.vatsim_online[:pilots] #=> [p1, p2, p3 ...]
+icao.vatsim_online[:departures] #=> [p1, p3 ...]
+icao.vatsim_online[:arrivals] #=> [p2, p4 ...]</p>
+
+<p>icao.vatsim_online[:atc].first #=> a1
+icao.vatsim_online[:pilots].first #=> p1</p>
+
+<p>a1.callsign #=> "LQSA_TWR"
+a1.frequency #=> "118.25"
+a1.name #=> "Svilen Vassilev"
+...</p>
+
+<p>p1.callsign #=> "ACH217S"
+p1.departure #=> "LQSA"
+p1.destination #=> "LDSP"
+p1.remarks #=> "/V/ RMK/CHARTS"
+...
+```</p>
+
+<h3>v. 0.2 - 21 July 2012</h3>
+
+<ul>
+<li>Station attribute <code>departure</code> is now renamed to <code>origin</code></li>
+<li><code>UTF-8</code> is now enforced for all local caching and file/string manipulations, the
+original Vatsim data is re-encoded</li>
+<li>Station ATIS is now cleaned of invalid and obscure characters</li>
+<li>Improved documentation</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[vatsim_online: ruby gem for retrieving, parsing and displaying vatsim online stations data]]></title>
@@ -141,13 +203,13 @@ end
 <li>for pilot in @pilots
 %li
   = pilot.callsign
-  = atc.name
-  = atc.origin
-  = atc.destination
-  = atc.route
-  = atc.altitude
-  = atc.groundspeed
-  = atc.remarks
+  = pilot.name
+  = pilot.origin
+  = pilot.destination
+  = pilot.route
+  = pilot.altitude
+  = pilot.groundspeed
+  = pilot.remarks
 ```</li>
 </ul>
 
@@ -321,49 +383,6 @@ route.gcmap(:terrain => true) # => Returns an image map URL with terrain overlay
 
 <p>As usual, the packaged gem is available on <a href="https://rubygems.org/gems/gcmapper">rubygems</a> and the source
 code and documentation are <a href="https://github.com/tarakanbg/gcmapper">on github</a>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Vasim_metar: a ruby gem for displaying Vatsim metars]]></title>
-    <link href="http://svilen.rubystudio.net/blog/2012/06/30/vasim-metar-a-ruby-gem-for-displaying-vatsim-metars/"/>
-    <updated>2012-06-30T18:55:00+03:00</updated>
-    <id>http://svilen.rubystudio.net/blog/2012/06/30/vasim-metar-a-ruby-gem-for-displaying-vatsim-metars</id>
-    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/dwb0fm.png"></p>
-
-<p>I just released a simple <a href="https://rubygems.org/gems/vatsim_metar">ruby library</a> for pulling and
-displaying latest VATSIM metar for a particular station. Can be used with Rails, Sinatra or any
-other kind of ruby application (web or otherwise).</p>
-
-<p>The usage is really simple, here's a quote from the README:</p>
-
-<p><em>The <code>.metar</code> method can be applied to a string (or variable containing a string), representing
-a valid ICAO code. Like this:</em></p>
-
-<p>```ruby
-"EGLL".metar # => "EGLL 291750Z 22016KT 9999 SCT023 SCT032 18/13 Q1005"</p>
-
-<p>airport = "EGLL"
-airport.metar # => "EGLL 291750Z 22016KT 9999 SCT023 SCT032 18/13 Q1005"
-```</p>
-
-<p>The input ICAO code is <strong>not case sensitive</strong>, so the following should work as well:</p>
-
-<p>```ruby
-"kjfk".metar # => "KJFK 291751Z 24016KT 10SM FEW180 SCT250 32/21 A2968 RMK AO2 SLP049 T03170211 10322 20222 58008"</p>
-
-<p>airport = "kjfk"
-airport.metar # => "KJFK 291751Z 24016KT 10SM FEW180 SCT250 32/21 A2968 RMK AO2 SLP049 T03170211 10322 2022
-```</p>
-
-<h2>Technicalities</h2>
-
-<p>This library augments the default Ruby <code>String</code> class with a method named <code>.metar</code>. It returns a string,
-containing the latest Vatsim METAR. The data is obtained via <code>curl</code> from Vatsim's web API, hence the <code>curb</code>
-dependency.</p>
-
-<p>The packaged gem is available on <a href="https://rubygems.org/gems/vatsim_metar">rubygems</a> and the source code
-and documentation are <a href="https://github.com/tarakanbg/vatsim_metar">on github</a>.</p>
 ]]></content>
   </entry>
   

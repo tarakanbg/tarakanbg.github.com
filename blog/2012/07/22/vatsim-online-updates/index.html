@@ -5,13 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Gitlab 2.4 first impressions - Patchwork</title>
+  <title>vatsim_online updates - Patchwork</title>
   <meta name="author" content="Svilen Vassilev">
 
   
-  <meta name="description" content="Today the great folks at http://gitlabhq.com/ released their
-version 2.4 and it&#8217;s great to see the project
-going strong and getting more &hellip;">
+  <meta name="description" content="vatsim_online gem has been upated
+twice with new features and API changes, I apologize for the inconvenience to
+the early adopters. Here&#8217;s the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +20,7 @@ going strong and getting more &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://svilen.rubystudio.net/blog/2012/04/23/gitlab-2-dot-4-first-impressions/">
+  <link rel="canonical" href="http://svilen.rubystudio.net/blog/2012/07/22/vatsim-online-updates/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -82,7 +82,7 @@ going strong and getting more &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Gitlab 2.4 First Impressions</h1>
+      <h1 class="entry-title">Vatsim_online Updates</h1>
     
     
       <p class="meta">
@@ -98,50 +98,88 @@ going strong and getting more &hellip;">
   
 
 
-<time datetime="2012-04-23T14:22:00+03:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2012</time>
+<time datetime="2012-07-22T19:17:00+03:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p><img class="right" src="http://i.imgur.com/5wW8f.png"></p>
+<div class="entry-content"><p><a href="https://rubygems.org/gems/vatsim_online">vatsim_online</a> gem has been upated
+twice with new features and API changes, I apologize for the inconvenience to
+the early adopters. Here&#8217;s the changelog:</p>
 
-<p>Today the great folks at <a href="http://gitlabhq.com/">http://gitlabhq.com/</a> released their
-<a href="http://blog.gitlabhq.com/gitlab-v2-4-released/">version 2.4</a> and it&#8217;s great to see the project
-going strong and getting more mature and more powerful with each new release. They&#8217;re also keeping
-the original promise of monthly releases and this is a very tight schedule, considering how much work
-goes into each  new version. This one for example has more than 200 commits.</p>
+<h3>v. 0.3 - 22 July 2012</h3>
 
-<p>So here are my thought&#8217;s, focusing mostly on the deficiencies, as those are getting fewer and fewer
-with each release :).</p>
+<ul>
+<li>The hash returned by the <code>vatsim_online</code> method now includes 2 new arrays:
+<code>arrivals</code> and <code>departures</code>. These two are returned separately for convenience,
+in case you want to loop through them separately. The <code>pilots</code> array return is
+unchanged and contains all arrivals and departures.</li>
+<li>New station attributes: <code>latitude</code>, <code>longitude</code></li>
+<li>Improved <code>UTF-8</code> conversion process</li>
+</ul>
 
-<p>This release introduces yet another visual redesign, not as fundamental as the previous one,
-but rather an incremental and quite welcome polish and enhancement, harnessing the power of twitter
-bootstrap and the responsive layout design.</p>
 
-<p>The milestones feature is necessary and welcome as well, however not perfect in its current
-implementation. For one thing we need to be able to see at a glance which milestone do the issues
-belong to in the issues list. Also we need multi-edit on issues to be able to mass-assign/reassign
-milestones, assignees, etc.</p>
+<p>So the method return now looks like this:</p>
 
-<p>The activity timelines, both global and scoped through a particular project are very handy for
-keeping track of what all the other members are doing, however they&#8217;re missing an RSS feed and
-that in a Rails app is easy to attach.</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span> <span class="c1"># =&gt; {:atc =&gt; [a1, a2, a3 ...], :pilots =&gt; [p1, p2, p3, p4 ...],</span>
+</span><span class='line'>                   <span class="c1">#    :departures =&gt; [p1, p4 ...], :arrivals =&gt; [p2, p3...]}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:atc</span><span class="o">]</span> <span class="c1">#=&gt; [a1, a2, a3 ...]</span>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:pilots</span><span class="o">]</span> <span class="c1">#=&gt; [p1, p2, p3 ...]</span>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:departures</span><span class="o">]</span> <span class="c1">#=&gt; [p1, p3 ...]</span>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:arrivals</span><span class="o">]</span> <span class="c1">#=&gt; [p2, p4 ...]</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:atc</span><span class="o">].</span><span class="n">first</span> <span class="c1">#=&gt; a1</span>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:pilots</span><span class="o">].</span><span class="n">first</span> <span class="c1">#=&gt; p1</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">a1</span><span class="o">.</span><span class="n">callsign</span> <span class="c1">#=&gt; &quot;LQSA_TWR&quot;</span>
+</span><span class='line'><span class="n">a1</span><span class="o">.</span><span class="n">frequency</span> <span class="c1">#=&gt; &quot;118.25&quot;</span>
+</span><span class='line'><span class="n">a1</span><span class="o">.</span><span class="n">name</span> <span class="c1">#=&gt; &quot;Svilen Vassilev&quot;</span>
+</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">p1</span><span class="o">.</span><span class="n">callsign</span> <span class="c1">#=&gt; &quot;ACH217S&quot;</span>
+</span><span class='line'><span class="n">p1</span><span class="o">.</span><span class="n">departure</span> <span class="c1">#=&gt; &quot;LQSA&quot;</span>
+</span><span class='line'><span class="n">p1</span><span class="o">.</span><span class="n">destination</span> <span class="c1">#=&gt; &quot;LDSP&quot;</span>
+</span><span class='line'><span class="n">p1</span><span class="o">.</span><span class="n">remarks</span> <span class="c1">#=&gt; &quot;/V/ RMK/CHARTS&quot;</span>
+</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>The merge/pull request functionality is great and in the code sections the only thing I&#8217;m really
-missing is a functionality replicating Github&#8217;s &#8220;blame&#8221; view.</p>
 
-<p>The admin interface has evolved for the better, but something I&#8217;m missing here is the ability
-to fine-tune user permissions, perhaps custom roles with the possibility to include/exclude
-any of the currently existing permissions on a per-role basis. For example what is the logic
-behind a &#8220;developer&#8221; being able to open issues, but only close their own ones? It&#8217;s too restrictive
-if only a &#8220;master&#8221; can resolve issues - considering all the powers a master has, I don&#8217;t want to be
-forced to assign this role to anyone whom I want to work on and close issues.</p>
+<h3>v. 0.2 - 21 July 2012</h3>
 
-<p>But these are all minor things that will undoubtedly be smoothed out in the future and even now
-it&#8217;s a pleasure to use gitlab in production on a daily basis. Looking forward to version 3, which
-should come in May and bring even more excitement!</p>
+<ul>
+<li>Station attribute <code>departure</code> is now renamed to <code>origin</code></li>
+<li><code>UTF-8</code> is now enforced for all local caching and file/string manipulations, the
+original Vatsim data is re-encoded</li>
+<li>Station ATIS is now cleaned of invalid and obscure characters</li>
+<li>Improved documentation</li>
+</ul>
+
 </div>
 
 
@@ -164,12 +202,12 @@ should come in May and bring even more excitement!</p>
   
 
 
-<time datetime="2012-04-23T14:22:00+03:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2012</time>
+<time datetime="2012-07-22T19:17:00+03:00" pubdate data-updated="true">Jul 22<span>nd</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/discoveries/'>discoveries</a>, <a class='category' href='/blog/categories/git/'>git</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/thoughts/'>thoughts</a>
+    <a class='category' href='/blog/categories/gems/'>gems</a>, <a class='category' href='/blog/categories/release/'>release</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/work/'>work</a>
   
 </span>
 
@@ -178,7 +216,7 @@ should come in May and bring even more excitement!</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://svilen.rubystudio.net/blog/2012/04/23/gitlab-2-dot-4-first-impressions/" data-via="svilenv" data-counturl="http://svilen.rubystudio.net/blog/2012/04/23/gitlab-2-dot-4-first-impressions/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://svilen.rubystudio.net/blog/2012/07/22/vatsim-online-updates/" data-via="svilenv" data-counturl="http://svilen.rubystudio.net/blog/2012/07/22/vatsim-online-updates/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -191,10 +229,8 @@ should come in May and bring even more excitement!</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/04/22/slovom-a-ruby-library-for-verbalizing-currency/" title="Previous Post: Slovom - a Ruby library for verbalizing currency">&laquo; Slovom - a Ruby library for verbalizing currency</a>
+        <a class="basic-alignment left" href="/blog/2012/07/20/vatsim-online-ruby-gem-for-retrieving-parsing-and-displaying-vatsim-online-data/" title="Previous Post: vatsim_online: ruby gem for retrieving, parsing and displaying vatsim online stations data">&laquo; vatsim_online: ruby gem for retrieving, parsing and displaying vatsim online stations data</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/04/26/rails-installer-update-for-ubuntu-12-dot-04-precise-pangolin/" title="Next Post: Rails Installer update for Ubuntu 12.04 (Precise Pangolin)">Rails Installer update for Ubuntu 12.04 (Precise Pangolin) &raquo;</a>
       
     </p>
   </footer>
@@ -315,8 +351,8 @@ should come in May and bring even more excitement!</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://svilen.rubystudio.net/blog/2012/04/23/gitlab-2-dot-4-first-impressions/';
-        var disqus_url = 'http://svilen.rubystudio.net/blog/2012/04/23/gitlab-2-dot-4-first-impressions/';
+        var disqus_identifier = 'http://svilen.rubystudio.net/blog/2012/07/22/vatsim-online-updates/';
+        var disqus_url = 'http://svilen.rubystudio.net/blog/2012/07/22/vatsim-online-updates/';
         var disqus_script = 'embed.js';
       
     (function () {

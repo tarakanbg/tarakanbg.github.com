@@ -9,7 +9,9 @@
   <meta name="author" content="Svilen Vassilev">
 
   
-  <meta name="description" content="Last night I released a new ruby gem (slovom). It converts decimal currency numbers into text in Bulgarian language, which can be useful in &hellip;">
+  <meta name="description" content="Today the great folks at http://gitlabhq.com/ released their
+version 2.4 and it&#8217;s great to see the project
+going strong and getting more &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -83,6 +85,78 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2012/04/23/gitlab-2-dot-4-first-impressions/">Gitlab 2.4 First Impressions</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-23T14:22:00+03:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="right" src="http://i.imgur.com/5wW8f.png"></p>
+
+<p>Today the great folks at <a href="http://gitlabhq.com/">http://gitlabhq.com/</a> released their
+<a href="http://blog.gitlabhq.com/gitlab-v2-4-released/">version 2.4</a> and it&#8217;s great to see the project
+going strong and getting more mature and more powerful with each new release. They&#8217;re also keeping
+the original promise of monthly releases and this is a very tight schedule, considering how much work
+goes into each  new version. This one for example has more than 200 commits.</p>
+
+<p>So here are my thought&#8217;s, focusing mostly on the deficiencies, as those are getting fewer and fewer
+with each release :).</p>
+
+<p>This release introduces yet another visual redesign, not as fundamental as the previous one,
+but rather an incremental and quite welcome polish and enhancement, harnessing the power of twitter
+bootstrap and the responsive layout design.</p>
+
+<p>The milestones feature is necessary and welcome as well, however not perfect in its current
+implementation. For one thing we need to be able to see at a glance which milestone do the issues
+belong to in the issues list. Also we need multi-edit on issues to be able to mass-assign/reassign
+milestones, assignees, etc.</p>
+
+<p>The activity timelines, both global and scoped through a particular project are very handy for
+keeping track of what all the other members are doing, however they&#8217;re missing an RSS feed and
+that in a Rails app is easy to attach.</p>
+
+<p>The merge/pull request functionality is great and in the code sections the only thing I&#8217;m really
+missing is a functionality replicating Github&#8217;s &#8220;blame&#8221; view.</p>
+
+<p>The admin interface has evolved for the better, but something I&#8217;m missing here is the ability
+to fine-tune user permissions, perhaps custom roles with the possibility to include/exclude
+any of the currently existing permissions on a per-role basis. For example what is the logic
+behind a &#8220;developer&#8221; being able to open issues, but only close their own ones? It&#8217;s too restrictive
+if only a &#8220;master&#8221; can resolve issues - considering all the powers a master has, I don&#8217;t want to be
+forced to assign this role to anyone whom I want to work on and close issues.</p>
+
+<p>But these are all minor things that will undoubtedly be smoothed out in the future and even now
+it&#8217;s a pleasure to use gitlab in production on a daily basis. Looking forward to version 3, which
+should come in May and bring even more excitement!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2012/04/22/slovom-a-ruby-library-for-verbalizing-currency/">Slovom - a Ruby Library for Verbalizing Currency</a></h1>
     
     
@@ -145,6 +219,10 @@ other Bulgarian ruby developers will find it useful.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/07/22/vatsim-online-updates/">vatsim_online updates</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/07/20/vatsim-online-ruby-gem-for-retrieving-parsing-and-displaying-vatsim-online-data/">vatsim_online: ruby gem for retrieving, parsing and displaying vatsim online stations data</a>
       </li>
     
@@ -158,10 +236,6 @@ other Bulgarian ruby developers will find it useful.</p>
     
       <li class="post">
         <a href="/blog/2012/07/09/great-site-for-3d-panoramas/">Great site for 3D panoramas</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/08/android-fixing-the-google-play-store-insufficient-space-error/">Android: fixing the Google Play Store &#8216;insufficient space&#8217; error</a>
       </li>
     
   </ul>
