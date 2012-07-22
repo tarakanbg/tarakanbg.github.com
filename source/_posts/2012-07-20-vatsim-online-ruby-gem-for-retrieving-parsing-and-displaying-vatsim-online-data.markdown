@@ -116,13 +116,13 @@ end
 - for pilot in @pilots
   %li
     = pilot.callsign
-    = atc.name
-    = atc.origin
-    = atc.destination
-    = atc.route
-    = atc.altitude
-    = atc.groundspeed
-    = atc.remarks
+    = pilot.name
+    = pilot.origin
+    = pilot.destination
+    = pilot.route
+    = pilot.altitude
+    = pilot.groundspeed
+    = pilot.remarks
 ```
 
 As always, the packaged gem is available on [rubygems](https://rubygems.org/gems/vatsim_online)
