@@ -4,7 +4,7 @@
   <title><![CDATA[Category: gems | Patchwork]]></title>
   <link href="http://svilen.rubystudio.net/blog/categories/gems/atom.xml" rel="self"/>
   <link href="http://svilen.rubystudio.net/"/>
-  <updated>2012-07-30T13:48:33+03:00</updated>
+  <updated>2012-07-30T19:13:31+03:00</updated>
   <id>http://svilen.rubystudio.net/</id>
   <author>
     <name><![CDATA[Svilen Vassilev]]></name>
@@ -12,6 +12,213 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[airdata: rails engine for adding aviation navdata]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/07/30/airdata-rails-engine-for-adding-aviation-navdata/"/>
+    <updated>2012-07-30T15:23:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/07/30/airdata-rails-engine-for-adding-aviation-navdata</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/TEiWIm.png"></p>
+
+<p>Another gem release, and this time it's a rails engine, so it <strong>requires</strong> a rails
+application: <a href="https://rubygems.org/gems/airdata">airdata</a></p>
+
+<p>It's a Rails engine for adding aviation related models and data to a web application.</p>
+
+<p>It will add 3 Active Record models to your rails application: <code>Airports</code>, <code>Runways</code>
+and <code>Waypoints</code> (including navaids). It will add the corresponding database
+structure (migrations) and finally it will populate the corresponding tables of
+your database with <a href="#data-stats">data</a> (currently based on <em>AIRAC cycle 1208</em>,
+but the data is updateable and the gem provides the tools to do so).</p>
+
+<h2>Installation within parent app</h2>
+
+<p>Add this gem AND the <code>activerecord-import</code> your application's Gemfile:</p>
+
+<pre><code>gem 'airdata'
+gem "activerecord-import", "~&gt; 0.2.9"  # Required for the data injection
+</code></pre>
+
+<p>And then execute:</p>
+
+<pre><code>$ bundle
+</code></pre>
+
+<p>Run the following commands in your app directory:</p>
+
+<p><code>sh
+rake airdata:install:migrations
+rake db:migrate
+rake airdata:setup
+</code></p>
+
+<h3>Updating the data</h3>
+
+<p>You can get information about your currently installed AIRAC cycle and the
+latest available one by running:</p>
+
+<p>```sh
+rake airdata:cycle  # =></p>
+
+<p>  Currently instaled AIRAC cycle: 1208
+  Latest available AIRAC cycle: 1208</p>
+
+<p>  No update is necessary!</p>
+
+<h1>Or if there's a newer verion available:</h1>
+
+<p>rake airdata:cycle  # =></p>
+
+<p>  There's a newer cycle available.
+  You can update by running: rake airdata:update
+```</p>
+
+<p>If you want to do a data update to a newer AIRAC cycle, run the following
+rake task for clearing up the old data and re-injecting the current one:</p>
+
+<p><code>sh
+rake airdata:update
+</code></p>
+
+<h2>Data stats</h2>
+
+<ul>
+<li>Airports: 10775</li>
+<li>Runways: 28977</li>
+<li>Navaids: 16300</li>
+<li><p>Waypoints: 214400</p></li>
+<li><p>Total DB records: 270472</p></li>
+</ul>
+
+
+<p>All data is derrived and compiled from public sources such as:
+<a href="http://www.ourairports.com/data/">OurAirports</a> and
+<a href="http://openflights.org/data.html">OpenFlights</a></p>
+
+<h2>Lib classes</h2>
+
+<p>2 classes handle the heavy lifting of downloading, parsing and injecting the data
+within you local database: <code>Airdata::DataDownloader</code> and <code>Airdata::DataInjector</code>.
+Generally you won't need to deal with them directly. All the functionality you
+need to install is triggered via rake tasks and almost nothing there is
+considered public API, apart from the following public class methods:</p>
+
+<p>```ruby
+  # Returns the currently installed AIRAC cycle:
+  Airdata::DataDownloader.cycle # => 1206</p>
+
+<p>  # Returns the latest available for download AIRAC cycle:
+  Airdata::DataDownloader.latest_cycle # => 1208
+```</p>
+
+<h2>Models and their attributes</h2>
+
+<p>These AR models and attribute sets will be available in your parent app,
+namespaced within the <code>Airdata</code> module and accessible like this:</p>
+
+<p><code>ruby
+ Airdata::Airports
+ Airdata::Runways
+ Airdata::Waypoints
+</code>
+Currently there are no special public methods/APIs available for these models,
+the engine is tailored primarily for data storage and access.</p>
+
+<h3>Airports</h3>
+
+<p>Includes one-to-many association with the <code>Runways</code> class.</p>
+
+<p>```ruby
+attr_accessible :elevation, :icao, :lat, :lon, :msa, :name, :ta</p>
+
+<p>has_many :runways, :dependent => :destroy
+```
+* ICAO
+* Name (city)
+* Latitude
+* Longitude
+* Elevation
+* Transition altitude
+* Minimum safe altitude</p>
+
+<h3>Runways</h3>
+
+<p>Includes one-to-many association with the <code>Airports</code> models.</p>
+
+<p>```ruby
+attr_accessible :airport_id, :course, :elevation, :glidepath, :ils, :ils_fac
+attr_accessible :ils_freq, :lat, :length, :lon, :number</p>
+
+<p>belongs_to :airport
+```</p>
+
+<ul>
+<li>airport_id (association)</li>
+<li>number</li>
+<li>course</li>
+<li>elevation</li>
+<li>glidepath angle</li>
+<li>ILS (boolean)</li>
+<li>ILS final approach course</li>
+<li>ILS frequency</li>
+<li>latitude on the threshold</li>
+<li>longitude on the threshold</li>
+<li>length</li>
+</ul>
+
+
+<h3>Waypoints (includes Navaids)</h3>
+
+<p>Regular waypoints only include <code>:ident, :lat, :lon, :country_code</code>. The rest is
+for navaids.</p>
+
+<p><code>ruby
+attr_accessible :country_code, :elevation, :freq, :ident, :lat, :lon, :name, :range
+</code>
+* ident
+* name
+* frequency
+* country code
+* elevation
+* latitude
+* longitude
+* range (in MSFS)</p>
+
+<h2>Rake tasks</h2>
+
+<p>Here's a lisk of all rake tasks that this gem adds:</p>
+
+<p>```sh
+rake airdata:install:migrations  # Copy migrations from airdata to application.</p>
+
+<pre><code>                             # This is part of the initial install process.
+</code></pre>
+
+<p>rake airdata:setup               # Downloads and installs the latest navdata
+rake airdata:cycle               # Compares your currently installed AIRAC cycle</p>
+
+<pre><code>                             # agianst the latest available
+</code></pre>
+
+<p>rake airdata:truncate            # Truncate navadata tables, populated by Airdata.</p>
+
+<pre><code>                             # Generally you don't need to run this separately,
+                             # it's automatically called during data updates
+</code></pre>
+
+<p>rake airdata:update              # Removes old Airdata and installs latest available</p>
+
+<pre><code>                             # Essentially it runs the truncate task followed by the setup
+</code></pre>
+
+<p>```</p>
+
+<h2>Download</h2>
+
+<p>As always the packaged gem is available on <a href="https://rubygems.org/gems/airdata">rubygems</a>
+and the source and documentation are <a href="https://github.com/tarakanbg/airdata">on github</a>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[notams gem updated]]></title>
@@ -283,43 +490,6 @@ icao.notams # => returns an array containing all NOTAMs for Sarajevo Airport and
 
 <p>As usual, the packaged gem is available on <a href="https://rubygems.org/gems/notams">rubygems</a> and the source
 code and documentation are <a href="https://github.com/tarakanbg/notams">on github</a>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[GCMapper updated with new features]]></title>
-    <link href="http://svilen.rubystudio.net/blog/2012/07/02/gcmapper-updated-with-new-features/"/>
-    <updated>2012-07-02T16:18:00+03:00</updated>
-    <id>http://svilen.rubystudio.net/blog/2012/07/02/gcmapper-updated-with-new-features</id>
-    <content type="html"><![CDATA[<p>It looks like <a href="https://rubygems.org/gems/gcmapper">gcmapper</a> got some traction after its
-<a href="/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/">initial release</a>,
-so after listening to some feedback I released a new version with the following changes:</p>
-
-<ul>
-<li>[Enhancement] Maps now show the user input code (ICAO or IATA) instead of ICAO only</li>
-<li>[Feature] New hash option <code>:city</code> to toggle city labels on or off (see <a href="https://github.com/tarakanbg/gcmapper#usage">Readme</a>)</li>
-<li>[Feature] New hash option <code>:airport_name</code> to toggle airport name labels on or off (see <a href="https://github.com/tarakanbg/gcmapper#usage">Readme</a>)</li>
-</ul>
-
-
-<p>Some examples of the new options:</p>
-
-<p>```ruby</p>
-
-<h1>Setting width, height, enabling terrain overlay and disabling the city labels:</h1>
-
-<p>"egll-lowi".gcmap(:width => 800, :height => 400, :terrain => true, :city => false) # => Returns an image map URL with set width, height and terrain, with city labels disabled</p>
-
-<h1>Setting the map to display the airports' names instead of the ICAO/IATA codes</h1>
-
-<p>route = "egll-lowi"
-route.gcmap(:airport_name => true) # => Returns an image map URL with airport names displayed</p>
-
-<h1>Setting the map to display the airports' names and a terrain overlay</h1>
-
-<p>route = "egll-lowi"
-route.gcmap(:airport_name => true, :terrain => true) # => Returns an image map URL with airport names and terrain displayed
-```</p>
 ]]></content>
   </entry>
   

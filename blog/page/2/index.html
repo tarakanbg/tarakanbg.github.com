@@ -9,8 +9,8 @@
   <meta name="author" content="Svilen Vassilev">
 
   
-  <meta name="description" content="I just updated my simple Rails Installer script for
-compatibility with Ubuntu 12.04. Some extra necessary deb packages were added and the ruby &hellip;">
+  <meta name="description" content="I just released a simple ruby library for pulling and
+displaying latest VATSIM metar for a particular station. Can be used with Rails, Sinatra or &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +78,84 @@ compatibility with Ubuntu 12.04. Some extra necessary deb packages were added an
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/06/30/vasim-metar-a-ruby-gem-for-displaying-vatsim-metars/">Vasim_metar: A Ruby Gem for Displaying Vatsim Metars</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-30T18:55:00+03:00" pubdate data-updated="true">Jun 30<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img class="right" src="http://i.imgur.com/dwb0fm.png"></p>
+
+<p>I just released a simple <a href="https://rubygems.org/gems/vatsim_metar">ruby library</a> for pulling and
+displaying latest VATSIM metar for a particular station. Can be used with Rails, Sinatra or any
+other kind of ruby application (web or otherwise).</p>
+
+<p>The usage is really simple, here&#8217;s a quote from the README:</p>
+
+<p><em>The <code>.metar</code> method can be applied to a string (or variable containing a string), representing
+a valid ICAO code. Like this:</em></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;EGLL&quot;</span><span class="o">.</span><span class="n">metar</span> <span class="c1"># =&gt; &quot;EGLL 291750Z 22016KT 9999 SCT023 SCT032 18/13 Q1005&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">airport</span> <span class="o">=</span> <span class="s2">&quot;EGLL&quot;</span>
+</span><span class='line'><span class="n">airport</span><span class="o">.</span><span class="n">metar</span> <span class="c1"># =&gt; &quot;EGLL 291750Z 22016KT 9999 SCT023 SCT032 18/13 Q1005&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The input ICAO code is <strong>not case sensitive</strong>, so the following should work as well:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;kjfk&quot;</span><span class="o">.</span><span class="n">metar</span> <span class="c1"># =&gt; &quot;KJFK 291751Z 24016KT 10SM FEW180 SCT250 32/21 A2968 RMK AO2 SLP049 T03170211 10322 20222 58008&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">airport</span> <span class="o">=</span> <span class="s2">&quot;kjfk&quot;</span>
+</span><span class='line'><span class="n">airport</span><span class="o">.</span><span class="n">metar</span> <span class="c1"># =&gt; &quot;KJFK 291751Z 24016KT 10SM FEW180 SCT250 32/21 A2968 RMK AO2 SLP049 T03170211 10322 2022</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Technicalities</h2>
+
+<p>This library augments the default Ruby <code>String</code> class with a method named <code>.metar</code>. It returns a string,
+containing the latest Vatsim METAR. The data is obtained via <code>curl</code> from Vatsim&#8217;s web API, hence the <code>curb</code>
+dependency.</p>
+
+<p>The packaged gem is available on <a href="https://rubygems.org/gems/vatsim_metar">rubygems</a> and the source code
+and documentation are <a href="https://github.com/tarakanbg/vatsim_metar">on github</a>.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -260,6 +338,10 @@ other Bulgarian ruby developers will find it useful.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/07/30/airdata-rails-engine-for-adding-aviation-navdata/">airdata: rails engine for adding aviation navdata</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/07/30/notams-gem-updated/">notams gem updated</a>
       </li>
     
@@ -273,10 +355,6 @@ other Bulgarian ruby developers will find it useful.</p>
     
       <li class="post">
         <a href="/blog/2012/07/09/notams-a-ruby-gem-for-retrieving-notams/">notams: a ruby gem for retrieving&#8230; well, NOTAMs</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/09/nice-nokogiri-tutorial/">Nice Nokogiri tutorial</a>
       </li>
     
   </ul>

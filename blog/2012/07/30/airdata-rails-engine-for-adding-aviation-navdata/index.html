@@ -1,0 +1,564 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>airdata: rails engine for adding aviation navdata - Patchwork</title>
+  <meta name="author" content="Svilen Vassilev">
+
+  
+  <meta name="description" content="Another gem release, and this time it&#8217;s a rails engine, so it requires a rails
+application: airdata It&#8217;s a Rails engine for adding &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://svilen.rubystudio.net/blog/2012/07/30/airdata-rails-engine-for-adding-aviation-navdata/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Patchwork" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-1746369-16']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Patchwork</a></h1>
+  
+    <h2>Svilen's personal blog, featuring an assorted collection of randomness and non-essential remarks</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:svilen.rubystudio.net" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="http://about.me/svilen">About me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Airdata: Rails Engine for Adding Aviation Navdata</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-30T15:23:00+03:00" pubdate data-updated="true">Jul 30<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img class="right" src="http://i.imgur.com/TEiWIm.png"></p>
+
+<p>Another gem release, and this time it&#8217;s a rails engine, so it <strong>requires</strong> a rails
+application: <a href="https://rubygems.org/gems/airdata">airdata</a></p>
+
+<p>It&#8217;s a Rails engine for adding aviation related models and data to a web application.</p>
+
+<p>It will add 3 Active Record models to your rails application: <code>Airports</code>, <code>Runways</code>
+and <code>Waypoints</code> (including navaids). It will add the corresponding database
+structure (migrations) and finally it will populate the corresponding tables of
+your database with <a href="#data-stats">data</a> (currently based on <em>AIRAC cycle 1208</em>,
+but the data is updateable and the gem provides the tools to do so).</p>
+
+<h2>Installation within parent app</h2>
+
+<p>Add this gem AND the <code>activerecord-import</code> your application&#8217;s Gemfile:</p>
+
+<pre><code>gem 'airdata'
+gem "activerecord-import", "~&gt; 0.2.9"  # Required for the data injection
+</code></pre>
+
+<p>And then execute:</p>
+
+<pre><code>$ bundle
+</code></pre>
+
+<p>Run the following commands in your app directory:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rake airdata:install:migrations
+</span><span class='line'>rake db:migrate
+</span><span class='line'>rake airdata:setup
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Updating the data</h3>
+
+<p>You can get information about your currently installed AIRAC cycle and the
+latest available one by running:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rake airdata:cycle  <span class="c"># =&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  Currently instaled AIRAC cycle: 1208
+</span><span class='line'>  Latest available AIRAC cycle: 1208
+</span><span class='line'>
+</span><span class='line'>  No update is necessary!
+</span><span class='line'>
+</span><span class='line'><span class="c"># Or if there&#39;s a newer verion available:</span>
+</span><span class='line'>rake airdata:cycle  <span class="c"># =&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  There<span class="err">&#39;</span>s a newer cycle available.
+</span><span class='line'>  You can update by running: rake airdata:update
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you want to do a data update to a newer AIRAC cycle, run the following
+rake task for clearing up the old data and re-injecting the current one:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rake airdata:update
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Data stats</h2>
+
+<ul>
+<li>Airports: 10775</li>
+<li>Runways: 28977</li>
+<li>Navaids: 16300</li>
+<li><p>Waypoints: 214400</p></li>
+<li><p>Total DB records: 270472</p></li>
+</ul>
+
+
+<p>All data is derrived and compiled from public sources such as:
+<a href="http://www.ourairports.com/data/">OurAirports</a> and
+<a href="http://openflights.org/data.html">OpenFlights</a></p>
+
+<h2>Lib classes</h2>
+
+<p>2 classes handle the heavy lifting of downloading, parsing and injecting the data
+within you local database: <code>Airdata::DataDownloader</code> and <code>Airdata::DataInjector</code>.
+Generally you won&#8217;t need to deal with them directly. All the functionality you
+need to install is triggered via rake tasks and almost nothing there is
+considered public API, apart from the following public class methods:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="c1"># Returns the currently installed AIRAC cycle:</span>
+</span><span class='line'>  <span class="no">Airdata</span><span class="o">::</span><span class="no">DataDownloader</span><span class="o">.</span><span class="n">cycle</span> <span class="c1"># =&gt; 1206</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Returns the latest available for download AIRAC cycle:</span>
+</span><span class='line'>  <span class="no">Airdata</span><span class="o">::</span><span class="no">DataDownloader</span><span class="o">.</span><span class="n">latest_cycle</span> <span class="c1"># =&gt; 1208</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Models and their attributes</h2>
+
+<p>These AR models and attribute sets will be available in your parent app,
+namespaced within the <code>Airdata</code> module and accessible like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="no">Airdata</span><span class="o">::</span><span class="no">Airports</span>
+</span><span class='line'> <span class="no">Airdata</span><span class="o">::</span><span class="no">Runways</span>
+</span><span class='line'> <span class="no">Airdata</span><span class="o">::</span><span class="no">Waypoints</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Currently there are no special public methods/APIs available for these models,
+the engine is tailored primarily for data storage and access.</p>
+
+<h3>Airports</h3>
+
+<p>Includes one-to-many association with the <code>Runways</code> class.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">attr_accessible</span> <span class="ss">:elevation</span><span class="p">,</span> <span class="ss">:icao</span><span class="p">,</span> <span class="ss">:lat</span><span class="p">,</span> <span class="ss">:lon</span><span class="p">,</span> <span class="ss">:msa</span><span class="p">,</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:ta</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">has_many</span> <span class="ss">:runways</span><span class="p">,</span> <span class="ss">:dependent</span> <span class="o">=&gt;</span> <span class="ss">:destroy</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>ICAO</li>
+<li>Name (city)</li>
+<li>Latitude</li>
+<li>Longitude</li>
+<li>Elevation</li>
+<li>Transition altitude</li>
+<li>Minimum safe altitude</li>
+</ul>
+
+
+<h3>Runways</h3>
+
+<p>Includes one-to-many association with the <code>Airports</code> models.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">attr_accessible</span> <span class="ss">:airport_id</span><span class="p">,</span> <span class="ss">:course</span><span class="p">,</span> <span class="ss">:elevation</span><span class="p">,</span> <span class="ss">:glidepath</span><span class="p">,</span> <span class="ss">:ils</span><span class="p">,</span> <span class="ss">:ils_fac</span>
+</span><span class='line'><span class="n">attr_accessible</span> <span class="ss">:ils_freq</span><span class="p">,</span> <span class="ss">:lat</span><span class="p">,</span> <span class="ss">:length</span><span class="p">,</span> <span class="ss">:lon</span><span class="p">,</span> <span class="ss">:number</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">belongs_to</span> <span class="ss">:airport</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>airport_id (association)</li>
+<li>number</li>
+<li>course</li>
+<li>elevation</li>
+<li>glidepath angle</li>
+<li>ILS (boolean)</li>
+<li>ILS final approach course</li>
+<li>ILS frequency</li>
+<li>latitude on the threshold</li>
+<li>longitude on the threshold</li>
+<li>length</li>
+</ul>
+
+
+<h3>Waypoints (includes Navaids)</h3>
+
+<p>Regular waypoints only include <code>:ident, :lat, :lon, :country_code</code>. The rest is
+for navaids.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">attr_accessible</span> <span class="ss">:country_code</span><span class="p">,</span> <span class="ss">:elevation</span><span class="p">,</span> <span class="ss">:freq</span><span class="p">,</span> <span class="ss">:ident</span><span class="p">,</span> <span class="ss">:lat</span><span class="p">,</span> <span class="ss">:lon</span><span class="p">,</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:range</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>ident</li>
+<li>name</li>
+<li>frequency</li>
+<li>country code</li>
+<li>elevation</li>
+<li>latitude</li>
+<li>longitude</li>
+<li>range (in MSFS)</li>
+</ul>
+
+
+<h2>Rake tasks</h2>
+
+<p>Here&#8217;s a lisk of all rake tasks that this gem adds:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rake airdata:install:migrations  <span class="c"># Copy migrations from airdata to application.</span>
+</span><span class='line'>                                 <span class="c"># This is part of the initial install process.</span>
+</span><span class='line'>rake airdata:setup               <span class="c"># Downloads and installs the latest navdata</span>
+</span><span class='line'>rake airdata:cycle               <span class="c"># Compares your currently installed AIRAC cycle</span>
+</span><span class='line'>                                 <span class="c"># agianst the latest available</span>
+</span><span class='line'>rake airdata:truncate            <span class="c"># Truncate navadata tables, populated by Airdata.</span>
+</span><span class='line'>                                 <span class="c"># Generally you don&#39;t need to run this separately,</span>
+</span><span class='line'>                                 <span class="c"># it&#39;s automatically called during data updates</span>
+</span><span class='line'>rake airdata:update              <span class="c"># Removes old Airdata and installs latest available</span>
+</span><span class='line'>                                 <span class="c"># Essentially it runs the truncate task followed by the setup</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Download</h2>
+
+<p>As always the packaged gem is available on <a href="https://rubygems.org/gems/airdata">rubygems</a>
+and the source and documentation are <a href="https://github.com/tarakanbg/airdata">on github</a>.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Svilen Vassilev</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-30T15:23:00+03:00" pubdate data-updated="true">Jul 30<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/gems/'>gems</a>, <a class='category' href='/blog/categories/release/'>release</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/work/'>work</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://svilen.rubystudio.net/blog/2012/07/30/airdata-rails-engine-for-adding-aviation-navdata/" data-via="svilenv" data-counturl="http://svilen.rubystudio.net/blog/2012/07/30/airdata-rails-engine-for-adding-aviation-navdata/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/07/30/notams-gem-updated/" title="Previous Post: notams gem updated">&laquo; notams gem updated</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/07/30/airdata-rails-engine-for-adding-aviation-navdata/">airdata: rails engine for adding aviation navdata</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/30/notams-gem-updated/">notams gem updated</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/22/vatsim-online-updates/">vatsim_online updates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/20/vatsim-online-ruby-gem-for-retrieving-parsing-and-displaying-vatsim-online-data/">vatsim_online: ruby gem for retrieving, parsing and displaying vatsim online stations data</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/09/notams-a-ruby-gem-for-retrieving-notams/">notams: a ruby gem for retrieving... well, NOTAMs</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("svilenv", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/svilenv" class="twitter-follow-button" data-show-count="false">Follow @svilenv</a>
+  
+</section>
+
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/tarakanbg">@tarakanbg</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'tarakanbg',
+            count: 4,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/117270154725336277557?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Svilen Vassilev -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'svilenblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://svilen.rubystudio.net/blog/2012/07/30/airdata-rails-engine-for-adding-aviation-navdata/';
+        var disqus_url = 'http://svilen.rubystudio.net/blog/2012/07/30/airdata-rails-engine-for-adding-aviation-navdata/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
