@@ -4,7 +4,7 @@
   <title><![CDATA[Patchwork]]></title>
   <link href="http://svilen.rubystudio.net/atom.xml" rel="self"/>
   <link href="http://svilen.rubystudio.net/"/>
-  <updated>2012-07-22T19:26:26+03:00</updated>
+  <updated>2012-07-30T13:48:33+03:00</updated>
   <id>http://svilen.rubystudio.net/</id>
   <author>
     <name><![CDATA[Svilen Vassilev]]></name>
@@ -12,6 +12,48 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[notams gem updated]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/07/30/notams-gem-updated/"/>
+    <updated>2012-07-30T13:38:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/07/30/notams-gem-updated</id>
+    <content type="html"><![CDATA[<p>Update released for the <a href="https://rubygems.org/gems/notams">notams gem</a>, completely
+refactoring the code into classes for flexibility and adding customization options.</p>
+
+<p>The <code>.notams</code> method can now be customized by passing an optional hash of arguments.</p>
+
+<p>The <code>:objects =&gt; true</code> option will cause the <code>.notams</code> method to return an array
+of notam <strong>objects</strong> instead of strings. Thus each notam is parsed and
+encapuslated in an instance of the <code>Notam</code> class and exposes a number of
+<strong>attributes</strong>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">icao</span> <span class="o">=</span> <span class="s2">&quot;lqsa&quot;</span>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">notams</span><span class="p">(</span><span class="ss">:objects</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span> <span class="c1"># =&gt; returns an array of notam objects</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">notam</span> <span class="o">=</span> <span class="n">icao</span><span class="o">.</span><span class="n">notams</span><span class="o">.</span><span class="n">first</span> <span class="c1"># =&gt; returns the first notam as an object</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Notam object attributes</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">notam</span><span class="o">.</span><span class="n">raw</span>       <span class="c1"># =&gt; returns the raw (unprocessed) notam as a string</span>
+</span><span class='line'><span class="n">notam</span><span class="o">.</span><span class="n">icao</span>      <span class="c1"># =&gt; returns the icao code of the airport or area, covered by the notam;</span>
+</span><span class='line'>                <span class="c1">#    useful when iterating over multiple notams, covering a collection of airports or areas</span>
+</span><span class='line'><span class="n">notam</span><span class="o">.</span><span class="n">message</span>   <span class="c1"># =&gt; returns the actual information message of the notam as a string</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[vatsim_online updates]]></title>
