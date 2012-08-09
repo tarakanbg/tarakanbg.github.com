@@ -4,7 +4,7 @@
   <title><![CDATA[Patchwork]]></title>
   <link href="http://svilen.rubystudio.net/atom.xml" rel="self"/>
   <link href="http://svilen.rubystudio.net/"/>
-  <updated>2012-07-30T19:13:31+03:00</updated>
+  <updated>2012-08-09T16:20:00+03:00</updated>
   <id>http://svilen.rubystudio.net/</id>
   <author>
     <name><![CDATA[Svilen Vassilev]]></name>
@@ -12,6 +12,48 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails Installer minor update]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/08/09/railsinstaller-minor-update/"/>
+    <updated>2012-08-09T15:55:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/08/09/railsinstaller-minor-update</id>
+    <content type="html"><![CDATA[<p>I made a few minor changes to my <a href="https://github.com/tarakanbg/railsinstaller">Rails Installer script</a>,
+most notably the install flows via <code>curl</code> and <code>wget</code> are simplified and reduced
+to one-liners, easy to copy and paste, but not very good looking (alas, that&#8217;s
+shell, not Ruby):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c"># via `curl`</span>
+</span><span class='line'>curl -L https://github.com/tarakanbg/railsinstaller/raw/master/ruby.sh &gt; ruby.sh; chmod +x ruby.sh; ./ruby.sh; rm ruby.sh
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c"># via `wget`</span>
+</span><span class='line'>wget --no-check-certificate https://github.com/tarakanbg/railsinstaller/raw/master/ruby.sh -O - &gt; ruby.sh; chmod +x ruby.sh; ./ruby.sh; rm ruby.sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Of course it would be much cleaner to just pipe the downloaded buffer through <code>sh</code>
+like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>curl -L https://github.com/tarakanbg/railsinstaller/raw/master/ruby.sh | sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Unfortunately in that case the script won&#8217;t wait for user input, so I opted for
+the verbose option.</p>
+
+<p>Additionally <code>RailsInstaller</code> is now tested and (expectedly) compatible with
+<a href="http://linuxmint.com/">Linux Mint 13 (Maya)</a>.
+Yes, I joined the growing ranks of Unity refugees :).</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[airdata: rails engine for adding aviation navdata]]></title>

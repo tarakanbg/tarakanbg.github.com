@@ -5,12 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Great site for 3D panoramas - Patchwork</title>
+  <title>Rails Installer minor update - Patchwork</title>
   <meta name="author" content="Svilen Vassilev">
 
   
-  <meta name="description" content="Discovered on the web: Airpano.com a great site for 3D aerial panoramas and virtual
-tours. Plenty of gorgeous places and landmarks from all over the &hellip;">
+  <meta name="description" content="I made a few minor changes to my Rails Installer script,
+most notably the install flows via curl and wget are simplified and reduced
+to one-liners, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +20,7 @@ tours. Plenty of gorgeous places and landmarks from all over the &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://svilen.rubystudio.net/blog/2012/07/09/great-site-for-3d-panoramas/">
+  <link rel="canonical" href="http://svilen.rubystudio.net/blog/2012/08/09/railsinstaller-minor-update/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -81,7 +82,7 @@ tours. Plenty of gorgeous places and landmarks from all over the &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Great Site for 3D Panoramas</h1>
+      <h1 class="entry-title">Rails Installer Minor Update</h1>
     
     
       <p class="meta">
@@ -97,18 +98,47 @@ tours. Plenty of gorgeous places and landmarks from all over the &hellip;">
   
 
 
-<time datetime="2012-07-09T15:43:00+03:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
+<time datetime="2012-08-09T15:55:00+03:00" pubdate data-updated="true">Aug 9<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p><img class="center" src="http://i.imgur.com/JW921h.png"></p>
+<div class="entry-content"><p>I made a few minor changes to my <a href="https://github.com/tarakanbg/railsinstaller">Rails Installer script</a>,
+most notably the install flows via <code>curl</code> and <code>wget</code> are simplified and reduced
+to one-liners, easy to copy and paste, but not very good looking (alas, that&#8217;s
+shell, not Ruby):</p>
 
-<p>Discovered on the web: <a href="http://www.airpano.com/">Airpano.com</a> a great site for 3D aerial panoramas and virtual
-tours. Plenty of gorgeous places and landmarks from all over the world, nice theme music, intuitive mouse controls.
-One can spend an entire day in virtual travelling and day-dreaming.</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c"># via `curl`</span>
+</span><span class='line'>curl -L https://github.com/tarakanbg/railsinstaller/raw/master/ruby.sh &gt; ruby.sh; chmod +x ruby.sh; ./ruby.sh; rm ruby.sh
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c"># via `wget`</span>
+</span><span class='line'>wget --no-check-certificate https://github.com/tarakanbg/railsinstaller/raw/master/ruby.sh -O - &gt; ruby.sh; chmod +x ruby.sh; ./ruby.sh; rm ruby.sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Of course it would be much cleaner to just pipe the downloaded buffer through <code>sh</code>
+like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>curl -L https://github.com/tarakanbg/railsinstaller/raw/master/ruby.sh | sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Unfortunately in that case the script won&#8217;t wait for user input, so I opted for
+the verbose option.</p>
+
+<p>Additionally <code>RailsInstaller</code> is now tested and (expectedly) compatible with
+<a href="http://linuxmint.com/">Linux Mint 13 (Maya)</a>.
+Yes, I joined the growing ranks of Unity refugees :).</p>
 </div>
 
 
@@ -131,12 +161,12 @@ One can spend an entire day in virtual travelling and day-dreaming.</p>
   
 
 
-<time datetime="2012-07-09T15:43:00+03:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
+<time datetime="2012-08-09T15:55:00+03:00" pubdate data-updated="true">Aug 9<span>th</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/discoveries/'>discoveries</a>
+    <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/releases/'>releases</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/work/'>work</a>
   
 </span>
 
@@ -145,7 +175,7 @@ One can spend an entire day in virtual travelling and day-dreaming.</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://svilen.rubystudio.net/blog/2012/07/09/great-site-for-3d-panoramas/" data-via="svilenv" data-counturl="http://svilen.rubystudio.net/blog/2012/07/09/great-site-for-3d-panoramas/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://svilen.rubystudio.net/blog/2012/08/09/railsinstaller-minor-update/" data-via="svilenv" data-counturl="http://svilen.rubystudio.net/blog/2012/08/09/railsinstaller-minor-update/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -158,10 +188,8 @@ One can spend an entire day in virtual travelling and day-dreaming.</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/07/08/android-fixing-the-google-play-store-insufficient-space-error/" title="Previous Post: Android: fixing the Google Play Store 'insufficient space' error">&laquo; Android: fixing the Google Play Store 'insufficient space' error</a>
+        <a class="basic-alignment left" href="/blog/2012/07/30/airdata-rails-engine-for-adding-aviation-navdata/" title="Previous Post: airdata: rails engine for adding aviation navdata">&laquo; airdata: rails engine for adding aviation navdata</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/07/09/nice-nokogiri-tutorial/" title="Next Post: Nice Nokogiri tutorial">Nice Nokogiri tutorial &raquo;</a>
       
     </p>
   </footer>
@@ -282,8 +310,8 @@ One can spend an entire day in virtual travelling and day-dreaming.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://svilen.rubystudio.net/blog/2012/07/09/great-site-for-3d-panoramas/';
-        var disqus_url = 'http://svilen.rubystudio.net/blog/2012/07/09/great-site-for-3d-panoramas/';
+        var disqus_identifier = 'http://svilen.rubystudio.net/blog/2012/08/09/railsinstaller-minor-update/';
+        var disqus_url = 'http://svilen.rubystudio.net/blog/2012/08/09/railsinstaller-minor-update/';
         var disqus_script = 'embed.js';
       
     (function () {

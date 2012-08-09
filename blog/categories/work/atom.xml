@@ -4,7 +4,7 @@
   <title><![CDATA[Category: work | Patchwork]]></title>
   <link href="http://svilen.rubystudio.net/blog/categories/work/atom.xml" rel="self"/>
   <link href="http://svilen.rubystudio.net/"/>
-  <updated>2012-07-30T19:13:31+03:00</updated>
+  <updated>2012-08-09T16:20:00+03:00</updated>
   <id>http://svilen.rubystudio.net/</id>
   <author>
     <name><![CDATA[Svilen Vassilev]]></name>
@@ -12,6 +12,43 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails Installer minor update]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/08/09/railsinstaller-minor-update/"/>
+    <updated>2012-08-09T15:55:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/08/09/railsinstaller-minor-update</id>
+    <content type="html"><![CDATA[<p>I made a few minor changes to my <a href="https://github.com/tarakanbg/railsinstaller">Rails Installer script</a>,
+most notably the install flows via <code>curl</code> and <code>wget</code> are simplified and reduced
+to one-liners, easy to copy and paste, but not very good looking (alas, that's
+shell, not Ruby):</p>
+
+<p>```sh</p>
+
+<h1>via <code>curl</code></h1>
+
+<p>curl -L https://github.com/tarakanbg/railsinstaller/raw/master/ruby.sh > ruby.sh; chmod +x ruby.sh; ./ruby.sh; rm ruby.sh</p>
+
+<h1>via <code>wget</code></h1>
+
+<p>wget --no-check-certificate https://github.com/tarakanbg/railsinstaller/raw/master/ruby.sh -O - > ruby.sh; chmod +x ruby.sh; ./ruby.sh; rm ruby.sh
+```</p>
+
+<p>Of course it would be much cleaner to just pipe the downloaded buffer through <code>sh</code>
+like this:</p>
+
+<p><code>sh
+curl -L https://github.com/tarakanbg/railsinstaller/raw/master/ruby.sh | sh
+</code></p>
+
+<p>Unfortunately in that case the script won't wait for user input, so I opted for
+the verbose option.</p>
+
+<p>Additionally <code>RailsInstaller</code> is now tested and (expectedly) compatible with
+<a href="http://linuxmint.com/">Linux Mint 13 (Maya)</a>.
+Yes, I joined the growing ranks of Unity refugees :).</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[airdata: rails engine for adding aviation navdata]]></title>
@@ -457,39 +494,6 @@ end
 
 <p>As always, the packaged gem is available on <a href="https://rubygems.org/gems/vatsim_online">rubygems</a>
 and the source code and documentation are <a href="https://github.com/tarakanbg/vatsim_online">on github</a>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[notams: a ruby gem for retrieving... well, NOTAMs]]></title>
-    <link href="http://svilen.rubystudio.net/blog/2012/07/09/notams-a-ruby-gem-for-retrieving-notams/"/>
-    <updated>2012-07-09T18:12:00+03:00</updated>
-    <id>http://svilen.rubystudio.net/blog/2012/07/09/notams-a-ruby-gem-for-retrieving-notams</id>
-    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/8sdZGm.png"></p>
-
-<p>New release: <a href="https://rubygems.org/gems/notams">notams</a>, gem for retrieving the currently active NOTAMs
-for an airport or a region. Supports multiple airports/regions in one request. Pulls data from
-<a href="http://www.faa.gov/">FAA website</a>. Depends on <a href="http://nokogiri.org/">nokogiri</a> for the heavy lifting.</p>
-
-<p>Here’s a quote from the documentation:</p>
-
-<p>The <code>.notams</code> method can be applied to any string (or variable containing a string), representing a valid
-ICAO code of an airport or FIR, or a comma-separated list of airports/regions. It will return an array,
-containing all the <strong>currently active</strong> NOTAMs for your selection. You can loop through the array to display or
-parse individual notams.</p>
-
-<p>```ruby
-icao = "lowi"
-icao.notams # => returns an array containing all NOTAMs for Innsbruck airport</p>
-
-<p>"lowi".notams # => same as above</p>
-
-<p>icao = "lqsa,lqsb"
-icao.notams # => returns an array containing all NOTAMs for Sarajevo Airport and Bosnia and Herzegovina FIR
-```</p>
-
-<p>As usual, the packaged gem is available on <a href="https://rubygems.org/gems/notams">rubygems</a> and the source
-code and documentation are <a href="https://github.com/tarakanbg/notams">on github</a>.</p>
 ]]></content>
   </entry>
   
