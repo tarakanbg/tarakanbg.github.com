@@ -1,0 +1,1012 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Patchwork]]></title>
+  <link href="http://svilen.rubystudio.net/atom.xml" rel="self"/>
+  <link href="http://svilen.rubystudio.net/"/>
+  <updated>2012-08-09T16:20:00+03:00</updated>
+  <id>http://svilen.rubystudio.net/</id>
+  <author>
+    <name><![CDATA[Svilen Vassilev]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Rails Installer minor update]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/08/09/railsinstaller-minor-update/"/>
+    <updated>2012-08-09T15:55:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/08/09/railsinstaller-minor-update</id>
+    <content type="html"><![CDATA[<p>I made a few minor changes to my <a href="https://github.com/tarakanbg/railsinstaller">Rails Installer script</a>,
+most notably the install flows via <code>curl</code> and <code>wget</code> are simplified and reduced
+to one-liners, easy to copy and paste, but not very good looking (alas, that&#8217;s
+shell, not Ruby):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c"># via `curl`</span>
+</span><span class='line'>curl -L https://github.com/tarakanbg/railsinstaller/raw/master/ruby.sh &gt; ruby.sh; chmod +x ruby.sh; ./ruby.sh; rm ruby.sh
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c"># via `wget`</span>
+</span><span class='line'>wget --no-check-certificate https://github.com/tarakanbg/railsinstaller/raw/master/ruby.sh -O - &gt; ruby.sh; chmod +x ruby.sh; ./ruby.sh; rm ruby.sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Of course it would be much cleaner to just pipe the downloaded buffer through <code>sh</code>
+like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>curl -L https://github.com/tarakanbg/railsinstaller/raw/master/ruby.sh | sh
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Unfortunately in that case the script won&#8217;t wait for user input, so I opted for
+the verbose option.</p>
+
+<p>Additionally <code>RailsInstaller</code> is now tested and (expectedly) compatible with
+<a href="http://linuxmint.com/">Linux Mint 13 (Maya)</a>.
+Yes, I joined the growing ranks of Unity refugees :).</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[airdata: rails engine for adding aviation navdata]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/07/30/airdata-rails-engine-for-adding-aviation-navdata/"/>
+    <updated>2012-07-30T15:23:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/07/30/airdata-rails-engine-for-adding-aviation-navdata</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/TEiWIm.png"></p>
+
+<p>Another gem release, and this time it&#8217;s a rails engine, so it <strong>requires</strong> a rails
+application: <a href="https://rubygems.org/gems/airdata">airdata</a></p>
+
+<p>It&#8217;s a Rails engine for adding aviation related models and data to a web application.</p>
+
+<p>It will add 3 Active Record models to your rails application: <code>Airports</code>, <code>Runways</code>
+and <code>Waypoints</code> (including navaids). It will add the corresponding database
+structure (migrations) and finally it will populate the corresponding tables of
+your database with <a href="#data-stats">data</a> (currently based on <em>AIRAC cycle 1208</em>,
+but the data is updateable and the gem provides the tools to do so).</p>
+
+<h2>Installation within parent app</h2>
+
+<p>Add this gem AND the <code>activerecord-import</code> your application&#8217;s Gemfile:</p>
+
+<pre><code>gem 'airdata'
+gem "activerecord-import", "~&gt; 0.2.9"  # Required for the data injection
+</code></pre>
+
+<p>And then execute:</p>
+
+<pre><code>$ bundle
+</code></pre>
+
+<p>Run the following commands in your app directory:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rake airdata:install:migrations
+</span><span class='line'>rake db:migrate
+</span><span class='line'>rake airdata:setup
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Updating the data</h3>
+
+<p>You can get information about your currently installed AIRAC cycle and the
+latest available one by running:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rake airdata:cycle  <span class="c"># =&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  Currently instaled AIRAC cycle: 1208
+</span><span class='line'>  Latest available AIRAC cycle: 1208
+</span><span class='line'>
+</span><span class='line'>  No update is necessary!
+</span><span class='line'>
+</span><span class='line'><span class="c"># Or if there&#39;s a newer verion available:</span>
+</span><span class='line'>rake airdata:cycle  <span class="c"># =&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  There<span class="err">&#39;</span>s a newer cycle available.
+</span><span class='line'>  You can update by running: rake airdata:update
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you want to do a data update to a newer AIRAC cycle, run the following
+rake task for clearing up the old data and re-injecting the current one:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rake airdata:update
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Data stats</h2>
+
+<ul>
+<li>Airports: 10775</li>
+<li>Runways: 28977</li>
+<li>Navaids: 16300</li>
+<li><p>Waypoints: 214400</p></li>
+<li><p>Total DB records: 270472</p></li>
+</ul>
+
+
+<p>All data is derrived and compiled from public sources such as:
+<a href="http://www.ourairports.com/data/">OurAirports</a> and
+<a href="http://openflights.org/data.html">OpenFlights</a></p>
+
+<h2>Lib classes</h2>
+
+<p>2 classes handle the heavy lifting of downloading, parsing and injecting the data
+within you local database: <code>Airdata::DataDownloader</code> and <code>Airdata::DataInjector</code>.
+Generally you won&#8217;t need to deal with them directly. All the functionality you
+need to install is triggered via rake tasks and almost nothing there is
+considered public API, apart from the following public class methods:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="c1"># Returns the currently installed AIRAC cycle:</span>
+</span><span class='line'>  <span class="no">Airdata</span><span class="o">::</span><span class="no">DataDownloader</span><span class="o">.</span><span class="n">cycle</span> <span class="c1"># =&gt; 1206</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Returns the latest available for download AIRAC cycle:</span>
+</span><span class='line'>  <span class="no">Airdata</span><span class="o">::</span><span class="no">DataDownloader</span><span class="o">.</span><span class="n">latest_cycle</span> <span class="c1"># =&gt; 1208</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Models and their attributes</h2>
+
+<p>These AR models and attribute sets will be available in your parent app,
+namespaced within the <code>Airdata</code> module and accessible like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="no">Airdata</span><span class="o">::</span><span class="no">Airports</span>
+</span><span class='line'> <span class="no">Airdata</span><span class="o">::</span><span class="no">Runways</span>
+</span><span class='line'> <span class="no">Airdata</span><span class="o">::</span><span class="no">Waypoints</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Currently there are no special public methods/APIs available for these models,
+the engine is tailored primarily for data storage and access.</p>
+
+<h3>Airports</h3>
+
+<p>Includes one-to-many association with the <code>Runways</code> class.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">attr_accessible</span> <span class="ss">:elevation</span><span class="p">,</span> <span class="ss">:icao</span><span class="p">,</span> <span class="ss">:lat</span><span class="p">,</span> <span class="ss">:lon</span><span class="p">,</span> <span class="ss">:msa</span><span class="p">,</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:ta</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">has_many</span> <span class="ss">:runways</span><span class="p">,</span> <span class="ss">:dependent</span> <span class="o">=&gt;</span> <span class="ss">:destroy</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>ICAO</li>
+<li>Name (city)</li>
+<li>Latitude</li>
+<li>Longitude</li>
+<li>Elevation</li>
+<li>Transition altitude</li>
+<li>Minimum safe altitude</li>
+</ul>
+
+
+<h3>Runways</h3>
+
+<p>Includes one-to-many association with the <code>Airports</code> models.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">attr_accessible</span> <span class="ss">:airport_id</span><span class="p">,</span> <span class="ss">:course</span><span class="p">,</span> <span class="ss">:elevation</span><span class="p">,</span> <span class="ss">:glidepath</span><span class="p">,</span> <span class="ss">:ils</span><span class="p">,</span> <span class="ss">:ils_fac</span>
+</span><span class='line'><span class="n">attr_accessible</span> <span class="ss">:ils_freq</span><span class="p">,</span> <span class="ss">:lat</span><span class="p">,</span> <span class="ss">:length</span><span class="p">,</span> <span class="ss">:lon</span><span class="p">,</span> <span class="ss">:number</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">belongs_to</span> <span class="ss">:airport</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>airport_id (association)</li>
+<li>number</li>
+<li>course</li>
+<li>elevation</li>
+<li>glidepath angle</li>
+<li>ILS (boolean)</li>
+<li>ILS final approach course</li>
+<li>ILS frequency</li>
+<li>latitude on the threshold</li>
+<li>longitude on the threshold</li>
+<li>length</li>
+</ul>
+
+
+<h3>Waypoints (includes Navaids)</h3>
+
+<p>Regular waypoints only include <code>:ident, :lat, :lon, :country_code</code>. The rest is
+for navaids.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">attr_accessible</span> <span class="ss">:country_code</span><span class="p">,</span> <span class="ss">:elevation</span><span class="p">,</span> <span class="ss">:freq</span><span class="p">,</span> <span class="ss">:ident</span><span class="p">,</span> <span class="ss">:lat</span><span class="p">,</span> <span class="ss">:lon</span><span class="p">,</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:range</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>ident</li>
+<li>name</li>
+<li>frequency</li>
+<li>country code</li>
+<li>elevation</li>
+<li>latitude</li>
+<li>longitude</li>
+<li>range (in MSFS)</li>
+</ul>
+
+
+<h2>Rake tasks</h2>
+
+<p>Here&#8217;s a lisk of all rake tasks that this gem adds:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rake airdata:install:migrations  <span class="c"># Copy migrations from airdata to application.</span>
+</span><span class='line'>                                 <span class="c"># This is part of the initial install process.</span>
+</span><span class='line'>rake airdata:setup               <span class="c"># Downloads and installs the latest navdata</span>
+</span><span class='line'>rake airdata:cycle               <span class="c"># Compares your currently installed AIRAC cycle</span>
+</span><span class='line'>                                 <span class="c"># agianst the latest available</span>
+</span><span class='line'>rake airdata:truncate            <span class="c"># Truncate navadata tables, populated by Airdata.</span>
+</span><span class='line'>                                 <span class="c"># Generally you don&#39;t need to run this separately,</span>
+</span><span class='line'>                                 <span class="c"># it&#39;s automatically called during data updates</span>
+</span><span class='line'>rake airdata:update              <span class="c"># Removes old Airdata and installs latest available</span>
+</span><span class='line'>                                 <span class="c"># Essentially it runs the truncate task followed by the setup</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Download</h2>
+
+<p>As always the packaged gem is available on <a href="https://rubygems.org/gems/airdata">rubygems</a>
+and the source and documentation are <a href="https://github.com/tarakanbg/airdata">on github</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[notams gem updated]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/07/30/notams-gem-updated/"/>
+    <updated>2012-07-30T13:38:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/07/30/notams-gem-updated</id>
+    <content type="html"><![CDATA[<p>Update released for the <a href="https://rubygems.org/gems/notams">notams gem</a>, completely
+refactoring the code into classes for flexibility and adding customization options.</p>
+
+<p>The <code>.notams</code> method can now be customized by passing an optional hash of arguments.</p>
+
+<p>The <code>:objects =&gt; true</code> option will cause the <code>.notams</code> method to return an array
+of notam <strong>objects</strong> instead of strings. Thus each notam is parsed and
+encapuslated in an instance of the <code>Notam</code> class and exposes a number of
+<strong>attributes</strong>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">icao</span> <span class="o">=</span> <span class="s2">&quot;lqsa&quot;</span>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">notams</span><span class="p">(</span><span class="ss">:objects</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span> <span class="c1"># =&gt; returns an array of notam objects</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">notam</span> <span class="o">=</span> <span class="n">icao</span><span class="o">.</span><span class="n">notams</span><span class="o">.</span><span class="n">first</span> <span class="c1"># =&gt; returns the first notam as an object</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Notam object attributes</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">notam</span><span class="o">.</span><span class="n">raw</span>       <span class="c1"># =&gt; returns the raw (unprocessed) notam as a string</span>
+</span><span class='line'><span class="n">notam</span><span class="o">.</span><span class="n">icao</span>      <span class="c1"># =&gt; returns the icao code of the airport or area, covered by the notam;</span>
+</span><span class='line'>                <span class="c1">#    useful when iterating over multiple notams, covering a collection of airports or areas</span>
+</span><span class='line'><span class="n">notam</span><span class="o">.</span><span class="n">message</span>   <span class="c1"># =&gt; returns the actual information message of the notam as a string</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[vatsim_online updates]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/07/22/vatsim-online-updates/"/>
+    <updated>2012-07-22T19:17:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/07/22/vatsim-online-updates</id>
+    <content type="html"><![CDATA[<p><a href="https://rubygems.org/gems/vatsim_online">vatsim_online</a> gem has been upated
+twice with new features and API changes, I apologize for the inconvenience to
+the early adopters. Here&#8217;s the changelog:</p>
+
+<h3>v. 0.3 - 22 July 2012</h3>
+
+<ul>
+<li>The hash returned by the <code>vatsim_online</code> method now includes 2 new arrays:
+<code>arrivals</code> and <code>departures</code>. These two are returned separately for convenience,
+in case you want to loop through them separately. The <code>pilots</code> array return is
+unchanged and contains all arrivals and departures.</li>
+<li>New station attributes: <code>latitude</code>, <code>longitude</code></li>
+<li>Improved <code>UTF-8</code> conversion process</li>
+</ul>
+
+
+<p>So the method return now looks like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span> <span class="c1"># =&gt; {:atc =&gt; [a1, a2, a3 ...], :pilots =&gt; [p1, p2, p3, p4 ...],</span>
+</span><span class='line'>                   <span class="c1">#    :departures =&gt; [p1, p4 ...], :arrivals =&gt; [p2, p3...]}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:atc</span><span class="o">]</span> <span class="c1">#=&gt; [a1, a2, a3 ...]</span>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:pilots</span><span class="o">]</span> <span class="c1">#=&gt; [p1, p2, p3 ...]</span>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:departures</span><span class="o">]</span> <span class="c1">#=&gt; [p1, p3 ...]</span>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:arrivals</span><span class="o">]</span> <span class="c1">#=&gt; [p2, p4 ...]</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:atc</span><span class="o">].</span><span class="n">first</span> <span class="c1">#=&gt; a1</span>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:pilots</span><span class="o">].</span><span class="n">first</span> <span class="c1">#=&gt; p1</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">a1</span><span class="o">.</span><span class="n">callsign</span> <span class="c1">#=&gt; &quot;LQSA_TWR&quot;</span>
+</span><span class='line'><span class="n">a1</span><span class="o">.</span><span class="n">frequency</span> <span class="c1">#=&gt; &quot;118.25&quot;</span>
+</span><span class='line'><span class="n">a1</span><span class="o">.</span><span class="n">name</span> <span class="c1">#=&gt; &quot;Svilen Vassilev&quot;</span>
+</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">p1</span><span class="o">.</span><span class="n">callsign</span> <span class="c1">#=&gt; &quot;ACH217S&quot;</span>
+</span><span class='line'><span class="n">p1</span><span class="o">.</span><span class="n">departure</span> <span class="c1">#=&gt; &quot;LQSA&quot;</span>
+</span><span class='line'><span class="n">p1</span><span class="o">.</span><span class="n">destination</span> <span class="c1">#=&gt; &quot;LDSP&quot;</span>
+</span><span class='line'><span class="n">p1</span><span class="o">.</span><span class="n">remarks</span> <span class="c1">#=&gt; &quot;/V/ RMK/CHARTS&quot;</span>
+</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>v. 0.2 - 21 July 2012</h3>
+
+<ul>
+<li>Station attribute <code>departure</code> is now renamed to <code>origin</code></li>
+<li><code>UTF-8</code> is now enforced for all local caching and file/string manipulations, the
+original Vatsim data is re-encoded</li>
+<li>Station ATIS is now cleaned of invalid and obscure characters</li>
+<li>Improved documentation</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[vatsim_online: ruby gem for retrieving, parsing and displaying vatsim online stations data]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/07/20/vatsim-online-ruby-gem-for-retrieving-parsing-and-displaying-vatsim-online-data/"/>
+    <updated>2012-07-20T18:22:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/07/20/vatsim-online-ruby-gem-for-retrieving-parsing-and-displaying-vatsim-online-data</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/F6mY4m.png"></p>
+
+<p>Another aviation/simulation related library: <a href="https://rubygems.org/gems/vatsim_online">vatsim_online</a>:
+a Ruby gem for selectively pulling, parsing and displaying Vatsim online stations
+data. Essentially it&#8217;s a &#8220;Who&#8217;s online&#8221; library, capable of displaying online
+ATC and/or pilots for given airports, areas or globally. Stations are returned
+as objects, exposing a rich set of attributes. Vatsim data is pulled on preset
+intervals and cached locally to avoid flooding the servers.</p>
+
+<p><em>A quote from the documentation:</em></p>
+
+<p>This gem provides one public method: <code>vatsim_online</code>, which can be applied to
+any string (or variable containing a string) representing a full or partial ICAO
+code. The provided ICAO code or fragment will be used as a search criteria and
+matched against the current vatsim data.</p>
+
+<p>The <code>vatsim_online</code> method returns a <strong>hash</strong> of 2 elements: the matching atc
+stations and pilots stations. Each of those is an <strong>array</strong>, cosnsisting of
+station <strong>objects</strong>. Each of these objects includes a number of <strong>attributes</strong>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span> <span class="c1"># =&gt; {:atc =&gt; [a1, a2, a3 ...], :pilots =&gt; [p1, p2, p3 ...]}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:atc</span><span class="o">]</span> <span class="c1">#=&gt; [a1, a2, a3 ...]</span>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:pilots</span><span class="o">]</span> <span class="c1">#=&gt; [p1, p2, p3 ...]</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:atc</span><span class="o">].</span><span class="n">first</span> <span class="c1">#=&gt; a1</span>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:pilots</span><span class="o">].</span><span class="n">first</span> <span class="c1">#=&gt; p1</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">a1</span><span class="o">.</span><span class="n">callsign</span> <span class="c1">#=&gt; &quot;LQSA_TWR&quot;</span>
+</span><span class='line'><span class="n">a1</span><span class="o">.</span><span class="n">frequency</span> <span class="c1">#=&gt; &quot;118.25&quot;</span>
+</span><span class='line'><span class="n">a1</span><span class="o">.</span><span class="n">name</span> <span class="c1">#=&gt; &quot;Svilen Vassilev&quot;</span>
+</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">p1</span><span class="o">.</span><span class="n">callsign</span> <span class="c1">#=&gt; &quot;ACH217S&quot;</span>
+</span><span class='line'><span class="n">p1</span><span class="o">.</span><span class="n">departure</span> <span class="c1">#=&gt; &quot;LQSA&quot;</span>
+</span><span class='line'><span class="n">p1</span><span class="o">.</span><span class="n">destination</span> <span class="c1">#=&gt; &quot;LDSP&quot;</span>
+</span><span class='line'><span class="n">p1</span><span class="o">.</span><span class="n">remarks</span> <span class="c1">#=&gt; &quot;/V/ RMK/CHARTS&quot;</span>
+</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>vatsim online</code> method can be customized by passing in a hash-style collection
+of arguments. The currently supported arguments and their defaults are:</p>
+
+<ul>
+<li>:atc => true (Possible values: true, false. Default value: true)</li>
+<li>:pilots => true (Possible values: true, false. Default value: true)</li>
+</ul>
+
+
+<p>Both options can be used to exclude all ATC or pilots stations respectively from
+the request, in order to speed it up and avoid processing useless data.</p>
+
+<p><strong>Examples:</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Lets exclude all ATC from our request and get the pilots only</span>
+</span><span class='line'><span class="s2">&quot;LO&quot;</span><span class="o">.</span><span class="n">vatsim_online</span><span class="p">(</span><span class="ss">:atc</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">)</span><span class="o">[</span><span class="ss">:pilots</span><span class="o">]</span> <span class="c1">#=&gt; [p1, p2, p3...]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Lets exclude all pilots from our request and get the ATC only</span>
+</span><span class='line'><span class="s2">&quot;LO&quot;</span><span class="o">.</span><span class="n">vatsim_online</span><span class="p">(</span><span class="ss">:pilots</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">)</span><span class="o">[</span><span class="ss">:atc</span><span class="o">]</span> <span class="c1">#=&gt; [a1, a2, a3...]</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&quot;LO&quot;</span><span class="o">.</span><span class="n">vatsim_online</span><span class="p">(</span><span class="ss">:atc</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">)</span><span class="o">[</span><span class="ss">:pilots</span><span class="o">].</span><span class="n">first</span><span class="o">.</span><span class="n">callsign</span> <span class="c1">#=&gt; &quot;ACH0838&quot;</span>
+</span><span class='line'><span class="s2">&quot;LO&quot;</span><span class="o">.</span><span class="n">vatsim_online</span><span class="p">(</span><span class="ss">:pilots</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">)</span><span class="o">[</span><span class="ss">:atc</span><span class="o">].</span><span class="n">first</span><span class="o">.</span><span class="n">callsign</span> <span class="c1">#=&gt; &quot;LOVV_CTR&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Notes</h3>
+
+<ul>
+<li>Vatsim status and data files are cached locally to reduce the load on vatsim
+servers. Random server is chosen to retrieve the data each time. By default the
+status file is updated once every 4 hours and the data file once every 3 minutes
+regardless of the number of incoming requests.</li>
+<li>The data is cached in your default TEMP directory (OS specific)</li>
+<li>All the data retrieval and caching logic is encapsulated in a separate class
+<code>VatsimTools::DataDownloader</code> which can be mixed in other applications and
+libraries too.</li>
+<li>The ICAO string used as a search criteria <strong>is not</strong> case sensitive</li>
+<li>Pilot stations returned are based on origin and destination airports, the
+current algorithm does not evaluate enroute flights.</li>
+</ul>
+
+
+<h3>Example of Ruby on Rails implementation</h3>
+
+<p>Finally, here&#8217;s a possible scenario of using this gem in a Ruby on Rails application.
+Verbosity is kept on purpose for clarity.</p>
+
+<p><strong>In your controller:</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">index</span>
+</span><span class='line'>  <span class="c1"># We want to retrieve all Austrian online stations (ATC and pilots)</span>
+</span><span class='line'>  <span class="n">icao</span> <span class="o">=</span> <span class="s2">&quot;LO&quot;</span>
+</span><span class='line'>  <span class="n">stations</span> <span class="o">=</span> <span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Now we will assign the ATCs and the pilots to separate instance variables,</span>
+</span><span class='line'>  <span class="c1"># to be able to loop through them separately in the view</span>
+</span><span class='line'>  <span class="vi">@atc</span> <span class="o">=</span> <span class="n">stations</span><span class="o">[</span><span class="ss">:atc</span><span class="o">]</span>
+</span><span class='line'>  <span class="vi">@pilots</span> <span class="o">=</span> <span class="n">stations</span><span class="o">[</span><span class="ss">:pilots</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>In your view (HAML is used for clarity):</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='haml'><span class='line'><span class="p">-</span> <span class="k">for</span> <span class="n">atc</span> <span class="k">in</span> <span class="vi">@atc</span>
+</span><span class='line'>  <span class="nt">%li</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">atc</span><span class="o">.</span><span class="n">callsign</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">atc</span><span class="o">.</span><span class="n">frequency</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">atc</span><span class="o">.</span><span class="n">rating</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">atc</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">atc</span><span class="o">.</span><span class="n">atis</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">-</span> <span class="k">for</span> <span class="n">pilot</span> <span class="k">in</span> <span class="vi">@pilots</span>
+</span><span class='line'>  <span class="nt">%li</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">pilot</span><span class="o">.</span><span class="n">callsign</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">pilot</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">pilot</span><span class="o">.</span><span class="n">origin</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">pilot</span><span class="o">.</span><span class="n">destination</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">pilot</span><span class="o">.</span><span class="n">route</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">pilot</span><span class="o">.</span><span class="n">altitude</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">pilot</span><span class="o">.</span><span class="n">groundspeed</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">pilot</span><span class="o">.</span><span class="n">remarks</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As always, the packaged gem is available on <a href="https://rubygems.org/gems/vatsim_online">rubygems</a>
+and the source code and documentation are <a href="https://github.com/tarakanbg/vatsim_online">on github</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[notams: a ruby gem for retrieving... well, NOTAMs]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/07/09/notams-a-ruby-gem-for-retrieving-notams/"/>
+    <updated>2012-07-09T18:12:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/07/09/notams-a-ruby-gem-for-retrieving-notams</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/8sdZGm.png"></p>
+
+<p>New release: <a href="https://rubygems.org/gems/notams">notams</a>, gem for retrieving the currently active NOTAMs
+for an airport or a region. Supports multiple airports/regions in one request. Pulls data from
+<a href="http://www.faa.gov/">FAA website</a>. Depends on <a href="http://nokogiri.org/">nokogiri</a> for the heavy lifting.</p>
+
+<p>Here’s a quote from the documentation:</p>
+
+<p>The <code>.notams</code> method can be applied to any string (or variable containing a string), representing a valid
+ICAO code of an airport or FIR, or a comma-separated list of airports/regions. It will return an array,
+containing all the <strong>currently active</strong> NOTAMs for your selection. You can loop through the array to display or
+parse individual notams.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">icao</span> <span class="o">=</span> <span class="s2">&quot;lowi&quot;</span>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">notams</span> <span class="c1"># =&gt; returns an array containing all NOTAMs for Innsbruck airport</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&quot;lowi&quot;</span><span class="o">.</span><span class="n">notams</span> <span class="c1"># =&gt; same as above</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">icao</span> <span class="o">=</span> <span class="s2">&quot;lqsa,lqsb&quot;</span>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">notams</span> <span class="c1"># =&gt; returns an array containing all NOTAMs for Sarajevo Airport and Bosnia and Herzegovina FIR</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As usual, the packaged gem is available on <a href="https://rubygems.org/gems/notams">rubygems</a> and the source
+code and documentation are <a href="https://github.com/tarakanbg/notams">on github</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Nice Nokogiri tutorial]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/07/09/nice-nokogiri-tutorial/"/>
+    <updated>2012-07-09T15:45:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/07/09/nice-nokogiri-tutorial</id>
+    <content type="html"><![CDATA[<p>I stumbled upon a nicely written entry-level tutorial about <a href="http://nokogiri.org/">nokogiri</a>, giving a clean,
+plain language explanation of the basic gem functionality and methods. The article is part of
+<a href="http://ruby.bastardsbook.com/">The Bastards Book of Ruby</a>.</p>
+
+<p><img class="center" src="http://i.imgur.com/4t9wvl.png"></p>
+
+<blockquote><p>We&#8230; saw how to use the web inspector to intercept raw data files. This allows us to read from them directly rather than deal with the data in HTML format&#8230; But there will be many instances when you&#8217;ll need to parse raw HTML. The Ruby gem Nokogiri makes reading raw HTML as easy as crack-parsed XML and JSON.</p><footer><strong>Dan Nguyen</strong> <cite><a href='http://ruby.bastardsbook.com/chapters/html-parsing/'>Parsing HTML With Nokogiri</a></cite></footer></blockquote>
+
+
+<p><a href="http://ruby.bastardsbook.com/chapters/html-parsing/">Read the entire post here</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Great site for 3D panoramas]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/07/09/great-site-for-3d-panoramas/"/>
+    <updated>2012-07-09T15:43:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/07/09/great-site-for-3d-panoramas</id>
+    <content type="html"><![CDATA[<p><img class="center" src="http://i.imgur.com/JW921h.png"></p>
+
+<p>Discovered on the web: <a href="http://www.airpano.com/">Airpano.com</a> a great site for 3D aerial panoramas and virtual
+tours. Plenty of gorgeous places and landmarks from all over the world, nice theme music, intuitive mouse controls.
+One can spend an entire day in virtual travelling and day-dreaming.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Android: fixing the Google Play Store 'insufficient space' error]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/07/08/android-fixing-the-google-play-store-insufficient-space-error/"/>
+    <updated>2012-07-08T14:30:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/07/08/android-fixing-the-google-play-store-insufficient-space-error</id>
+    <content type="html"><![CDATA[<p>There&#8217;s an annoying issue that many Android users with custom ROMs such as <code>CyanogenMod</code> have experienced:
+when trying do download a larger app from the Google Play Store, i.e. 25-30 MB app, then occasionally an
+error message appears to indicate that the download can&#8217;t be completed due to &#8220;insufficient space on the device&#8221;.
+This can happen even if there are 90-100 MB free on internal memory, which is much more then required for
+installation.</p>
+
+<p>This issue crept in with one of the newer versions of Android Market, around the end of 2011, so devices that
+haven&#8217;t been upgraded since will be unaffected. The issue is due to the Market (Play Store) cash being stored
+on internal memory and affecting the free space requirements calculations for downloading a new bigger app
+locally and then installing it. This can be solved by moving the Play Store cache to the SD card. Luckily
+there&#8217;s an app that makes this easy!</p>
+
+<p><img class="center" src="http://i.imgur.com/6KFYJl.png"></p>
+
+<p>Enter <a href="https://play.google.com/store/apps/details?id=net.felipearon.marketfix">Marketfix</a>. Just install the
+app and run it, but note: it requires root permissions to complete the cache relocation operation.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GCMapper updated with new features]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/07/02/gcmapper-updated-with-new-features/"/>
+    <updated>2012-07-02T16:18:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/07/02/gcmapper-updated-with-new-features</id>
+    <content type="html"><![CDATA[<p>It looks like <a href="https://rubygems.org/gems/gcmapper">gcmapper</a> got some traction after its
+<a href="http://svilen.rubystudio.net/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/">initial release</a>,
+so after listening to some feedback I released a new version with the following changes:</p>
+
+<ul>
+<li>[Enhancement] Maps now show the user input code (ICAO or IATA) instead of ICAO only</li>
+<li>[Feature] New hash option <code>:city</code> to toggle city labels on or off (see <a href="https://github.com/tarakanbg/gcmapper#usage">Readme</a>)</li>
+<li>[Feature] New hash option <code>:airport_name</code> to toggle airport name labels on or off (see <a href="https://github.com/tarakanbg/gcmapper#usage">Readme</a>)</li>
+</ul>
+
+
+<p>Some examples of the new options:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Setting width, height, enabling terrain overlay and disabling the city labels:</span>
+</span><span class='line'><span class="s2">&quot;egll-lowi&quot;</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:width</span> <span class="o">=&gt;</span> <span class="mi">800</span><span class="p">,</span> <span class="ss">:height</span> <span class="o">=&gt;</span> <span class="mi">400</span><span class="p">,</span> <span class="ss">:terrain</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">:city</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">)</span> <span class="c1"># =&gt; Returns an image map URL with set width, height and terrain, with city labels disabled</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Setting the map to display the airports&#39; names instead of the ICAO/IATA codes</span>
+</span><span class='line'><span class="n">route</span> <span class="o">=</span> <span class="s2">&quot;egll-lowi&quot;</span>
+</span><span class='line'><span class="n">route</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:airport_name</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span> <span class="c1"># =&gt; Returns an image map URL with airport names displayed</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Setting the map to display the airports&#39; names and a terrain overlay</span>
+</span><span class='line'><span class="n">route</span> <span class="o">=</span> <span class="s2">&quot;egll-lowi&quot;</span>
+</span><span class='line'><span class="n">route</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:airport_name</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">:terrain</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span> <span class="c1"># =&gt; Returns an image map URL with airport names and terrain displayed</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GCMapper: A Ruby gem for generating Great Circle maps]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/"/>
+    <updated>2012-07-02T00:59:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/kO2hKm.png"></p>
+
+<p>Yet another gem release announcement: this time it&#8217;s <a href="https://github.com/tarakanbg/gcmapper">GCMapper</a>,
+a library for easy generation of Great Circle Map images between 2 or more airports. The gem provides
+an API for constructing the image URLs, the maps themselves are pulled
+from <a href="http://www.gcmap.com/">gcmap.com</a>.</p>
+
+<p>Here&#8217;s a quote from the documentation:</p>
+
+<p>The <code>.gcmap</code> method can be applied to a string (or variable containing a string), representing a valid route
+between 2 or more airports (ICAO or IATA codes), connected with dashes, like this: <code>EGLL-LOWI</code> or
+<code>LFST-LSZH-LBSF</code>. Here are some examples:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># An example of normal route:</span>
+</span><span class='line'><span class="n">route</span> <span class="o">=</span> <span class="s2">&quot;EGLL-LOWI&quot;</span>
+</span><span class='line'><span class="n">route</span><span class="o">.</span><span class="n">gcmap</span> <span class="c1"># =&gt; Returns an image map URL for the route EGLL-LOWI</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># An exampmle of layover route:</span>
+</span><span class='line'><span class="n">another_route</span> <span class="o">=</span> <span class="s2">&quot;LFST-LSZH-LBSF&quot;</span>
+</span><span class='line'><span class="n">another_route</span><span class="o">.</span><span class="n">gcmap</span> <span class="c1"># =&gt; Returns an image map URL for the layover route LFST-LSZH-LBSF</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># The method can be applied directly to a string:</span>
+</span><span class='line'><span class="s2">&quot;EGLL-LOWI&quot;</span><span class="o">.</span><span class="n">gcmap</span> <span class="c1"># =&gt; Returns an image map URL for the route EGLL-LOWI</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># It&#39;s not case sensitive:</span>
+</span><span class='line'><span class="s2">&quot;egll-lowi&quot;</span><span class="o">.</span><span class="n">gcmap</span> <span class="c1"># =&gt; Returns an image map URL for the route EGLL-LOWI</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The resulting image size and look can be customized by passing an optional hash of arguments to the
+<code>.gcmap</code> method. Customizable attributes include <em>width, height</em> and <em>terrain</em> (toggle satelite terrain overlay).
+These options can be combined in any way or omitted entirely. Examples:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Passing width only (default is 720px):</span>
+</span><span class='line'><span class="n">route</span> <span class="o">=</span> <span class="s2">&quot;egll-lowi&quot;</span>
+</span><span class='line'><span class="n">route</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:width</span> <span class="o">=&gt;</span> <span class="s2">&quot;600&quot;</span><span class="p">)</span> <span class="c1"># =&gt; Returns an image map URL with width set to 600px</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Passing height only (default is 360px):</span>
+</span><span class='line'><span class="n">route</span> <span class="o">=</span> <span class="s2">&quot;egll-lowi&quot;</span>
+</span><span class='line'><span class="n">route</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:height</span> <span class="o">=&gt;</span> <span class="mi">400</span><span class="p">)</span>  <span class="c1"># =&gt; Returns an image map URL with height set to 400px</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Passing width and height:</span>
+</span><span class='line'><span class="s2">&quot;egll-lowi&quot;</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:width</span> <span class="o">=&gt;</span> <span class="s2">&quot;800&quot;</span><span class="p">,</span> <span class="ss">:height</span> <span class="o">=&gt;</span> <span class="s2">&quot;400&quot;</span><span class="p">)</span> <span class="c1"># =&gt; Returns an image map URL with width 800px and height 400px</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Enabling terrain overlay:</span>
+</span><span class='line'><span class="n">route</span> <span class="o">=</span> <span class="s2">&quot;egll-lowi&quot;</span>
+</span><span class='line'><span class="n">route</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:terrain</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span> <span class="c1"># =&gt; Returns an image map URL with terrain overlay enabled</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Setting width, height and enabling terrain overlay:</span>
+</span><span class='line'><span class="s2">&quot;egll-lowi&quot;</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:width</span> <span class="o">=&gt;</span> <span class="mi">800</span><span class="p">,</span> <span class="ss">:height</span> <span class="o">=&gt;</span> <span class="mi">400</span><span class="p">,</span> <span class="ss">:terrain</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span> <span class="c1"># =&gt; Returns an image map URL with set width, height and terrain</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally, here&#8217;s an example of how to use the gem in a Rails application:</p>
+
+<p><em>In your controller:</em></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@route</span> <span class="o">=</span> <span class="s2">&quot;egll-lowi&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>In your view:</em></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%=</span> <span class="n">image_tag</span> <span class="vi">@route</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:width</span> <span class="o">=&gt;</span> <span class="s2">&quot;600&quot;</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Notes:</h4>
+
+<ul>
+<li>the <code>route</code> string can be constructed from either ICAO or IATA airport codes; both types are recognized</li>
+<li>the <code>route</code> string is <strong>not case sensitive</strong>, so for example <code>lgav-lqsa</code> will be recognized as well</li>
+<li>layover routes that chain multiple airports (more than 2) are also supported</li>
+<li>default image parameters are: width 720px, width: 360px, terrain not shown</li>
+<li>when passing the <code>width</code> and <code>height</code> hash options the values can be put in quotes or not, either way works</li>
+</ul>
+
+
+<p>As usual, the packaged gem is available on <a href="https://rubygems.org/gems/gcmapper">rubygems</a> and the source
+code and documentation are <a href="https://github.com/tarakanbg/gcmapper">on github</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Vasim_metar: a ruby gem for displaying Vatsim metars]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/06/30/vasim-metar-a-ruby-gem-for-displaying-vatsim-metars/"/>
+    <updated>2012-06-30T18:55:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/06/30/vasim-metar-a-ruby-gem-for-displaying-vatsim-metars</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/dwb0fm.png"></p>
+
+<p>I just released a simple <a href="https://rubygems.org/gems/vatsim_metar">ruby library</a> for pulling and
+displaying latest VATSIM metar for a particular station. Can be used with Rails, Sinatra or any
+other kind of ruby application (web or otherwise).</p>
+
+<p>The usage is really simple, here&#8217;s a quote from the README:</p>
+
+<p><em>The <code>.metar</code> method can be applied to a string (or variable containing a string), representing
+a valid ICAO code. Like this:</em></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;EGLL&quot;</span><span class="o">.</span><span class="n">metar</span> <span class="c1"># =&gt; &quot;EGLL 291750Z 22016KT 9999 SCT023 SCT032 18/13 Q1005&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">airport</span> <span class="o">=</span> <span class="s2">&quot;EGLL&quot;</span>
+</span><span class='line'><span class="n">airport</span><span class="o">.</span><span class="n">metar</span> <span class="c1"># =&gt; &quot;EGLL 291750Z 22016KT 9999 SCT023 SCT032 18/13 Q1005&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The input ICAO code is <strong>not case sensitive</strong>, so the following should work as well:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s2">&quot;kjfk&quot;</span><span class="o">.</span><span class="n">metar</span> <span class="c1"># =&gt; &quot;KJFK 291751Z 24016KT 10SM FEW180 SCT250 32/21 A2968 RMK AO2 SLP049 T03170211 10322 20222 58008&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">airport</span> <span class="o">=</span> <span class="s2">&quot;kjfk&quot;</span>
+</span><span class='line'><span class="n">airport</span><span class="o">.</span><span class="n">metar</span> <span class="c1"># =&gt; &quot;KJFK 291751Z 24016KT 10SM FEW180 SCT250 32/21 A2968 RMK AO2 SLP049 T03170211 10322 2022</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Technicalities</h2>
+
+<p>This library augments the default Ruby <code>String</code> class with a method named <code>.metar</code>. It returns a string,
+containing the latest Vatsim METAR. The data is obtained via <code>curl</code> from Vatsim&#8217;s web API, hence the <code>curb</code>
+dependency.</p>
+
+<p>The packaged gem is available on <a href="https://rubygems.org/gems/vatsim_metar">rubygems</a> and the source code
+and documentation are <a href="https://github.com/tarakanbg/vatsim_metar">on github</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rails Installer update for Ubuntu 12.04 (Precise Pangolin)]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/04/26/rails-installer-update-for-ubuntu-12-dot-04-precise-pangolin/"/>
+    <updated>2012-04-26T14:30:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/04/26/rails-installer-update-for-ubuntu-12-dot-04-precise-pangolin</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/za1ry.png"></p>
+
+<p>I just updated my simple <a href="https://github.com/tarakanbg/railsinstaller">Rails Installer</a> script for
+compatibility with Ubuntu 12.04. Some extra necessary deb packages were added and the ruby version
+is now bumped to 1.9.3. If you don&#8217;t feel like fiddling with rvm and gemsets, which in my opinion
+is seldom necessary anymore with all the latest bundler improvements, you can just grab the script
+from <a href="https://github.com/tarakanbg/railsinstaller">github</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Gitlab 2.4 first impressions]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/04/23/gitlab-2-dot-4-first-impressions/"/>
+    <updated>2012-04-23T14:22:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/04/23/gitlab-2-dot-4-first-impressions</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/5wW8f.png"></p>
+
+<p>Today the great folks at <a href="http://gitlabhq.com/">http://gitlabhq.com/</a> released their
+<a href="http://blog.gitlabhq.com/gitlab-v2-4-released/">version 2.4</a> and it&#8217;s great to see the project
+going strong and getting more mature and more powerful with each new release. They&#8217;re also keeping
+the original promise of monthly releases and this is a very tight schedule, considering how much work
+goes into each  new version. This one for example has more than 200 commits.</p>
+
+<p>So here are my thought&#8217;s, focusing mostly on the deficiencies, as those are getting fewer and fewer
+with each release :).</p>
+
+<p>This release introduces yet another visual redesign, not as fundamental as the previous one,
+but rather an incremental and quite welcome polish and enhancement, harnessing the power of twitter
+bootstrap and the responsive layout design.</p>
+
+<p>The milestones feature is necessary and welcome as well, however not perfect in its current
+implementation. For one thing we need to be able to see at a glance which milestone do the issues
+belong to in the issues list. Also we need multi-edit on issues to be able to mass-assign/reassign
+milestones, assignees, etc.</p>
+
+<p>The activity timelines, both global and scoped through a particular project are very handy for
+keeping track of what all the other members are doing, however they&#8217;re missing an RSS feed and
+that in a Rails app is easy to attach.</p>
+
+<p>The merge/pull request functionality is great and in the code sections the only thing I&#8217;m really
+missing is a functionality replicating Github&#8217;s &#8220;blame&#8221; view.</p>
+
+<p>The admin interface has evolved for the better, but something I&#8217;m missing here is the ability
+to fine-tune user permissions, perhaps custom roles with the possibility to include/exclude
+any of the currently existing permissions on a per-role basis. For example what is the logic
+behind a &#8220;developer&#8221; being able to open issues, but only close their own ones? It&#8217;s too restrictive
+if only a &#8220;master&#8221; can resolve issues - considering all the powers a master has, I don&#8217;t want to be
+forced to assign this role to anyone whom I want to work on and close issues.</p>
+
+<p>But these are all minor things that will undoubtedly be smoothed out in the future and even now
+it&#8217;s a pleasure to use gitlab in production on a daily basis. Looking forward to version 3, which
+should come in May and bring even more excitement!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Slovom - a Ruby library for verbalizing currency]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/04/22/slovom-a-ruby-library-for-verbalizing-currency/"/>
+    <updated>2012-04-22T14:14:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/04/22/slovom-a-ruby-library-for-verbalizing-currency</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/kCMUi.png"></p>
+
+<p>Last night I released a new ruby gem (<a href="https://rubygems.org/gems/slovom">slovom</a>).</p>
+
+<p>It converts decimal currency numbers into text in Bulgarian language, which can be useful in
+financial applications, accounting documents, and all other instances requiring currency
+verbalization. It handles the specifics of verbally presenting numbers and prices in Bulgarian,
+including grammatical irregularities, differences due to gender, singularity and plurality
+and the logic of using or omitting the &#8220;and&#8221; conjunction from the resulting string.</p>
+
+<p>It&#8217;s extracted from a pawnbroker/pawnshop rails application which I&#8217;m currently working on,
+called Lombard, to be released as a service in the coming months.</p>
+
+<p>It&#8217;s a bit surprising to see some 50 downloads of the gem in less than a day, hopefully
+other Bulgarian ruby developers will find it useful.</p>
+
+<p>Here&#8217;s the <a href="https://github.com/tarakanbg/slovom">github link</a> for convenience.</p>
+]]></content>
+  </entry>
+  
+</feed>

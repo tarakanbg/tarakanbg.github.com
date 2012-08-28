@@ -1,0 +1,512 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>vatsim_online: ruby gem for retrieving, parsing and displaying vatsim online stations data - Patchwork</title>
+  <meta name="author" content="Svilen Vassilev">
+
+  
+  <meta name="description" content="Another aviation/simulation related library: vatsim_online:
+a Ruby gem for selectively pulling, parsing and displaying Vatsim online stations
+data. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://svilen.rubystudio.net/blog/2012/07/20/vatsim-online-ruby-gem-for-retrieving-parsing-and-displaying-vatsim-online-data/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Patchwork" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-1746369-16']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Patchwork</a></h1>
+  
+    <h2>Svilen's personal blog, featuring an assorted collection of randomness and non-essential remarks</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:svilen.rubystudio.net" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="http://about.me/svilen">About me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Vatsim_online: Ruby Gem for Retrieving, Parsing and Displaying Vatsim Online Stations Data</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-20T18:22:00+03:00" pubdate data-updated="true">Jul 20<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img class="right" src="http://i.imgur.com/F6mY4m.png"></p>
+
+<p>Another aviation/simulation related library: <a href="https://rubygems.org/gems/vatsim_online">vatsim_online</a>:
+a Ruby gem for selectively pulling, parsing and displaying Vatsim online stations
+data. Essentially it&#8217;s a &#8220;Who&#8217;s online&#8221; library, capable of displaying online
+ATC and/or pilots for given airports, areas or globally. Stations are returned
+as objects, exposing a rich set of attributes. Vatsim data is pulled on preset
+intervals and cached locally to avoid flooding the servers.</p>
+
+<p><em>A quote from the documentation:</em></p>
+
+<p>This gem provides one public method: <code>vatsim_online</code>, which can be applied to
+any string (or variable containing a string) representing a full or partial ICAO
+code. The provided ICAO code or fragment will be used as a search criteria and
+matched against the current vatsim data.</p>
+
+<p>The <code>vatsim_online</code> method returns a <strong>hash</strong> of 2 elements: the matching atc
+stations and pilots stations. Each of those is an <strong>array</strong>, cosnsisting of
+station <strong>objects</strong>. Each of these objects includes a number of <strong>attributes</strong>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span> <span class="c1"># =&gt; {:atc =&gt; [a1, a2, a3 ...], :pilots =&gt; [p1, p2, p3 ...]}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:atc</span><span class="o">]</span> <span class="c1">#=&gt; [a1, a2, a3 ...]</span>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:pilots</span><span class="o">]</span> <span class="c1">#=&gt; [p1, p2, p3 ...]</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:atc</span><span class="o">].</span><span class="n">first</span> <span class="c1">#=&gt; a1</span>
+</span><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:pilots</span><span class="o">].</span><span class="n">first</span> <span class="c1">#=&gt; p1</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">a1</span><span class="o">.</span><span class="n">callsign</span> <span class="c1">#=&gt; &quot;LQSA_TWR&quot;</span>
+</span><span class='line'><span class="n">a1</span><span class="o">.</span><span class="n">frequency</span> <span class="c1">#=&gt; &quot;118.25&quot;</span>
+</span><span class='line'><span class="n">a1</span><span class="o">.</span><span class="n">name</span> <span class="c1">#=&gt; &quot;Svilen Vassilev&quot;</span>
+</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">p1</span><span class="o">.</span><span class="n">callsign</span> <span class="c1">#=&gt; &quot;ACH217S&quot;</span>
+</span><span class='line'><span class="n">p1</span><span class="o">.</span><span class="n">departure</span> <span class="c1">#=&gt; &quot;LQSA&quot;</span>
+</span><span class='line'><span class="n">p1</span><span class="o">.</span><span class="n">destination</span> <span class="c1">#=&gt; &quot;LDSP&quot;</span>
+</span><span class='line'><span class="n">p1</span><span class="o">.</span><span class="n">remarks</span> <span class="c1">#=&gt; &quot;/V/ RMK/CHARTS&quot;</span>
+</span><span class='line'><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>vatsim online</code> method can be customized by passing in a hash-style collection
+of arguments. The currently supported arguments and their defaults are:</p>
+
+<ul>
+<li>:atc => true (Possible values: true, false. Default value: true)</li>
+<li>:pilots => true (Possible values: true, false. Default value: true)</li>
+</ul>
+
+
+<p>Both options can be used to exclude all ATC or pilots stations respectively from
+the request, in order to speed it up and avoid processing useless data.</p>
+
+<p><strong>Examples:</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Lets exclude all ATC from our request and get the pilots only</span>
+</span><span class='line'><span class="s2">&quot;LO&quot;</span><span class="o">.</span><span class="n">vatsim_online</span><span class="p">(</span><span class="ss">:atc</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">)</span><span class="o">[</span><span class="ss">:pilots</span><span class="o">]</span> <span class="c1">#=&gt; [p1, p2, p3...]</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Lets exclude all pilots from our request and get the ATC only</span>
+</span><span class='line'><span class="s2">&quot;LO&quot;</span><span class="o">.</span><span class="n">vatsim_online</span><span class="p">(</span><span class="ss">:pilots</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">)</span><span class="o">[</span><span class="ss">:atc</span><span class="o">]</span> <span class="c1">#=&gt; [a1, a2, a3...]</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&quot;LO&quot;</span><span class="o">.</span><span class="n">vatsim_online</span><span class="p">(</span><span class="ss">:atc</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">)</span><span class="o">[</span><span class="ss">:pilots</span><span class="o">].</span><span class="n">first</span><span class="o">.</span><span class="n">callsign</span> <span class="c1">#=&gt; &quot;ACH0838&quot;</span>
+</span><span class='line'><span class="s2">&quot;LO&quot;</span><span class="o">.</span><span class="n">vatsim_online</span><span class="p">(</span><span class="ss">:pilots</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">)</span><span class="o">[</span><span class="ss">:atc</span><span class="o">].</span><span class="n">first</span><span class="o">.</span><span class="n">callsign</span> <span class="c1">#=&gt; &quot;LOVV_CTR&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Notes</h3>
+
+<ul>
+<li>Vatsim status and data files are cached locally to reduce the load on vatsim
+servers. Random server is chosen to retrieve the data each time. By default the
+status file is updated once every 4 hours and the data file once every 3 minutes
+regardless of the number of incoming requests.</li>
+<li>The data is cached in your default TEMP directory (OS specific)</li>
+<li>All the data retrieval and caching logic is encapsulated in a separate class
+<code>VatsimTools::DataDownloader</code> which can be mixed in other applications and
+libraries too.</li>
+<li>The ICAO string used as a search criteria <strong>is not</strong> case sensitive</li>
+<li>Pilot stations returned are based on origin and destination airports, the
+current algorithm does not evaluate enroute flights.</li>
+</ul>
+
+
+<h3>Example of Ruby on Rails implementation</h3>
+
+<p>Finally, here&#8217;s a possible scenario of using this gem in a Ruby on Rails application.
+Verbosity is kept on purpose for clarity.</p>
+
+<p><strong>In your controller:</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">index</span>
+</span><span class='line'>  <span class="c1"># We want to retrieve all Austrian online stations (ATC and pilots)</span>
+</span><span class='line'>  <span class="n">icao</span> <span class="o">=</span> <span class="s2">&quot;LO&quot;</span>
+</span><span class='line'>  <span class="n">stations</span> <span class="o">=</span> <span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># Now we will assign the ATCs and the pilots to separate instance variables,</span>
+</span><span class='line'>  <span class="c1"># to be able to loop through them separately in the view</span>
+</span><span class='line'>  <span class="vi">@atc</span> <span class="o">=</span> <span class="n">stations</span><span class="o">[</span><span class="ss">:atc</span><span class="o">]</span>
+</span><span class='line'>  <span class="vi">@pilots</span> <span class="o">=</span> <span class="n">stations</span><span class="o">[</span><span class="ss">:pilots</span><span class="o">]</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>In your view (HAML is used for clarity):</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='haml'><span class='line'><span class="p">-</span> <span class="k">for</span> <span class="n">atc</span> <span class="k">in</span> <span class="vi">@atc</span>
+</span><span class='line'>  <span class="nt">%li</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">atc</span><span class="o">.</span><span class="n">callsign</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">atc</span><span class="o">.</span><span class="n">frequency</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">atc</span><span class="o">.</span><span class="n">rating</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">atc</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">atc</span><span class="o">.</span><span class="n">atis</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">-</span> <span class="k">for</span> <span class="n">pilot</span> <span class="k">in</span> <span class="vi">@pilots</span>
+</span><span class='line'>  <span class="nt">%li</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">pilot</span><span class="o">.</span><span class="n">callsign</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">pilot</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">pilot</span><span class="o">.</span><span class="n">origin</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">pilot</span><span class="o">.</span><span class="n">destination</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">pilot</span><span class="o">.</span><span class="n">route</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">pilot</span><span class="o">.</span><span class="n">altitude</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">pilot</span><span class="o">.</span><span class="n">groundspeed</span>
+</span><span class='line'>    <span class="p">=</span> <span class="n">pilot</span><span class="o">.</span><span class="n">remarks</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As always, the packaged gem is available on <a href="https://rubygems.org/gems/vatsim_online">rubygems</a>
+and the source code and documentation are <a href="https://github.com/tarakanbg/vatsim_online">on github</a>.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Svilen Vassilev</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-20T18:22:00+03:00" pubdate data-updated="true">Jul 20<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/gems/'>gems</a>, <a class='category' href='/blog/categories/release/'>release</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/work/'>work</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://svilen.rubystudio.net/blog/2012/07/20/vatsim-online-ruby-gem-for-retrieving-parsing-and-displaying-vatsim-online-data/" data-via="svilenv" data-counturl="http://svilen.rubystudio.net/blog/2012/07/20/vatsim-online-ruby-gem-for-retrieving-parsing-and-displaying-vatsim-online-data/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/07/09/notams-a-ruby-gem-for-retrieving-notams/" title="Previous Post: notams: a ruby gem for retrieving... well, NOTAMs">&laquo; notams: a ruby gem for retrieving... well, NOTAMs</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/07/22/vatsim-online-updates/" title="Next Post: vatsim_online updates">vatsim_online updates &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/08/09/railsinstaller-minor-update/">Rails Installer minor update</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/30/airdata-rails-engine-for-adding-aviation-navdata/">airdata: rails engine for adding aviation navdata</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/30/notams-gem-updated/">notams gem updated</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/22/vatsim-online-updates/">vatsim_online updates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/20/vatsim-online-ruby-gem-for-retrieving-parsing-and-displaying-vatsim-online-data/">vatsim_online: ruby gem for retrieving, parsing and displaying vatsim online stations data</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("svilenv", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/svilenv" class="twitter-follow-button" data-show-count="false">Follow @svilenv</a>
+  
+</section>
+
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/tarakanbg">@tarakanbg</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'tarakanbg',
+            count: 4,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/117270154725336277557?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Svilen Vassilev -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'svilenblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://svilen.rubystudio.net/blog/2012/07/20/vatsim-online-ruby-gem-for-retrieving-parsing-and-displaying-vatsim-online-data/';
+        var disqus_url = 'http://svilen.rubystudio.net/blog/2012/07/20/vatsim-online-ruby-gem-for-retrieving-parsing-and-displaying-vatsim-online-data/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
