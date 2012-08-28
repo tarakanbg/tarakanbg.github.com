@@ -15,10 +15,12 @@ var github = (function(){
         , error: function (err) { $(options.target + ' li.loading').addClass('error').text("Error loading feed"); }
         , success: function(data) {
           var repos = [];
-          if (!data || !data.repositories) { return; }
-          for (var i = 0; i < data.repositories.length; i++) {
-            if (options.skip_forks && data.repositories[i].fork) { continue; }
-            repos.push(data.repositories[i]);
+          // if (!data || !data.repositories) { return; }
+          // for (var i = 0; i < data.repositories.length; i++) {
+          //   if (options.skip_forks && data.repositories[i].fork) { continue; }
+          //   repos.push(data.repositories[i]);
+          // they changed it from  'repositories' to 'data'
+          if (!data || !data.data) { return; }
           }
           repos.sort(function(a, b) {
             var aDate = new Date(a.pushed_at).valueOf(),
