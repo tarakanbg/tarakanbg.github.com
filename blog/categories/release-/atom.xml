@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: release, | Patchwork]]></title>
+  <link href="http://svilen.rubystudio.net/blog/categories/release-/atom.xml" rel="self"/>
+  <link href="http://svilen.rubystudio.net/"/>
+  <updated>2012-08-28T20:37:19+03:00</updated>
+  <id>http://svilen.rubystudio.net/</id>
+  <author>
+    <name><![CDATA[Svilen Vassilev]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Latest gem updates]]></title>
+    <link href="http://svilen.rubystudio.net/blog/2012/08/28/latest-gem-updates/"/>
+    <updated>2012-08-28T20:22:00+03:00</updated>
+    <id>http://svilen.rubystudio.net/blog/2012/08/28/latest-gem-updates</id>
+    <content type="html"><![CDATA[<p>I made a few updates to some of my gems recently and here's a brief overview:</p>
+
+<h2>vatsim_online</h2>
+
+<p>The <a href="https://github.com/tarakanbg/vatsim_online">vatsim_online</a> gem received some
+new atributes to the <code>Station</code> class:</p>
+
+<ul>
+<li><code>planned_altitude</code> (or FL)</li>
+<li><code>transponder</code></li>
+<li><code>heading</code></li>
+<li><code>qnh_in</code> (set QNH in inches Hg)</li>
+<li><code>qnh_mb</code> (set QNH in milibars/hectopascals)</li>
+<li><code>flight_type</code> (<code>I</code> for IFR, <code>V</code> for VFR, etc)</li>
+<li><code>cid</code></li>
+<li><code>latitude_humanized</code>  (e.g. N44.09780)</li>
+<li><code>longitude_humanized</code>  (e.g. W58.41483)</li>
+</ul>
+
+
+<p>More importantly, this library now plays nicely with <a href="https://rubygems.org/gems/gcmapper">gcmapper</a>.
+A new attribute is provided for the pilot stations: <code>.gcmap</code> which returns a great
+circle map image url, depicting the GC route of the aircraft, its origin and destination,
+its current position on the route, together with its current altitude and groundspeed.</p>
+
+<p>Here's an example:</p>
+
+<p><code>ruby
+icao.vatsim_online[:pilots].first.gcmap #=&gt; image url of the map
+</code></p>
+
+<p><img src="http://www.gcmap.com/map?P=kdfw-N44.09780+W58.41483-egll,+%22AAL026%5cn37112+ft%5cn516+kts%22%2b%40N44.09780+W58.41483&amp;MS=wls&amp;MR=540&amp;MX=720x360&amp;PM=*" alt="GC Map" /></p>
+
+<p><a href="https://rubygems.org/gems/vatsim_online">vatsim_online on rubygems.org</a></p>
+
+<h2>gcmapper</h2>
+
+<p>The <a href="https://github.com/tarakanbg/gcmapper">gcmapper</a> gem is updated for compatibility
+with <code>vatsim_online</code>. No user-facing changes here.</p>
+
+<p><a href="https://rubygems.org/gems/gcmapper">gcmapper on rubygems.org</a></p>
+
+<h2>airdata</h2>
+
+<p>The <a href="https://github.com/tarakanbg/airdata">airdata</a> Rails engine now includes
+default ordering for all 3 classes. Airports and waypoints are sorted
+<em>alphabetically</em> i.e. ordered by <code>id</code>, and the runways are ordered by their
+<code>airport_id</code>. Remember you can always override the default ordering by using Active
+Record's <code>.reorder</code> <a href="http://guides.rubyonrails.org/active_record_querying.html#ordering">method</a></p>
+
+<p><a href="https://rubygems.org/gems/airdata">airdata on rubygems.org</a></p>
+]]></content>
+  </entry>
+  
+</feed>

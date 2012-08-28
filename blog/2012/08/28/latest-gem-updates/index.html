@@ -5,13 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Gitlab 2.4 first impressions - Patchwork</title>
+  <title>Latest gem updates - Patchwork</title>
   <meta name="author" content="Svilen Vassilev">
 
   
-  <meta name="description" content="Today the great folks at http://gitlabhq.com/ released their
-version 2.4 and it&#8217;s great to see the project
-going strong and getting more &hellip;">
+  <meta name="description" content="I made a few updates to some of my gems recently and here&#8217;s a brief overview: vatsim_online The vatsim_online gem received some
+new atributes &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +19,7 @@ going strong and getting more &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://svilen.rubystudio.net/blog/2012/04/23/gitlab-2-dot-4-first-impressions/">
+  <link rel="canonical" href="http://svilen.rubystudio.net/blog/2012/08/28/latest-gem-updates/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -82,7 +81,7 @@ going strong and getting more &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Gitlab 2.4 first impressions</h1>
+      <h1 class="entry-title">Latest gem updates</h1>
     
     
       <p class="meta">
@@ -98,50 +97,65 @@ going strong and getting more &hellip;">
   
 
 
-<time datetime="2012-04-23T14:22:00+03:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2012</time>
+<time datetime="2012-08-28T20:22:00+03:00" pubdate data-updated="true">Aug 28<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p><img class="right" src="http://i.imgur.com/5wW8f.png"></p>
+<div class="entry-content"><p>I made a few updates to some of my gems recently and here&#8217;s a brief overview:</p>
 
-<p>Today the great folks at <a href="http://gitlabhq.com/">http://gitlabhq.com/</a> released their
-<a href="http://blog.gitlabhq.com/gitlab-v2-4-released/">version 2.4</a> and it&#8217;s great to see the project
-going strong and getting more mature and more powerful with each new release. They&#8217;re also keeping
-the original promise of monthly releases and this is a very tight schedule, considering how much work
-goes into each  new version. This one for example has more than 200 commits.</p>
+<h2>vatsim_online</h2>
 
-<p>So here are my thought&#8217;s, focusing mostly on the deficiencies, as those are getting fewer and fewer
-with each release :).</p>
+<p>The <a href="https://github.com/tarakanbg/vatsim_online">vatsim_online</a> gem received some
+new atributes to the <code>Station</code> class:</p>
 
-<p>This release introduces yet another visual redesign, not as fundamental as the previous one,
-but rather an incremental and quite welcome polish and enhancement, harnessing the power of twitter
-bootstrap and the responsive layout design.</p>
+<ul>
+<li><code>planned_altitude</code> (or FL)</li>
+<li><code>transponder</code></li>
+<li><code>heading</code></li>
+<li><code>qnh_in</code> (set QNH in inches Hg)</li>
+<li><code>qnh_mb</code> (set QNH in milibars/hectopascals)</li>
+<li><code>flight_type</code> (<code>I</code> for IFR, <code>V</code> for VFR, etc)</li>
+<li><code>cid</code></li>
+<li><code>latitude_humanized</code>  (e.g. N44.09780)</li>
+<li><code>longitude_humanized</code>  (e.g. W58.41483)</li>
+</ul>
 
-<p>The milestones feature is necessary and welcome as well, however not perfect in its current
-implementation. For one thing we need to be able to see at a glance which milestone do the issues
-belong to in the issues list. Also we need multi-edit on issues to be able to mass-assign/reassign
-milestones, assignees, etc.</p>
 
-<p>The activity timelines, both global and scoped through a particular project are very handy for
-keeping track of what all the other members are doing, however they&#8217;re missing an RSS feed and
-that in a Rails app is easy to attach.</p>
+<p>More importantly, this library now plays nicely with <a href="https://rubygems.org/gems/gcmapper">gcmapper</a>.
+A new attribute is provided for the pilot stations: <code>.gcmap</code> which returns a great
+circle map image url, depicting the GC route of the aircraft, its origin and destination,
+its current position on the route, together with its current altitude and groundspeed.</p>
 
-<p>The merge/pull request functionality is great and in the code sections the only thing I&#8217;m really
-missing is a functionality replicating Github&#8217;s &#8220;blame&#8221; view.</p>
+<p>Here&#8217;s an example:</p>
 
-<p>The admin interface has evolved for the better, but something I&#8217;m missing here is the ability
-to fine-tune user permissions, perhaps custom roles with the possibility to include/exclude
-any of the currently existing permissions on a per-role basis. For example what is the logic
-behind a &#8220;developer&#8221; being able to open issues, but only close their own ones? It&#8217;s too restrictive
-if only a &#8220;master&#8221; can resolve issues - considering all the powers a master has, I don&#8217;t want to be
-forced to assign this role to anyone whom I want to work on and close issues.</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:pilots</span><span class="o">].</span><span class="n">first</span><span class="o">.</span><span class="n">gcmap</span> <span class="c1">#=&gt; image url of the map</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>But these are all minor things that will undoubtedly be smoothed out in the future and even now
-it&#8217;s a pleasure to use gitlab in production on a daily basis. Looking forward to version 3, which
-should come in May and bring even more excitement!</p>
+
+<p><img src="http://www.gcmap.com/map?P=kdfw-N44.09780+W58.41483-egll,+%22AAL026%5cn37112+ft%5cn516+kts%22%2b%40N44.09780+W58.41483&amp;MS=wls&amp;MR=540&amp;MX=720x360&amp;PM=*" alt="GC Map" /></p>
+
+<p><a href="https://rubygems.org/gems/vatsim_online">vatsim_online on rubygems.org</a></p>
+
+<h2>gcmapper</h2>
+
+<p>The <a href="https://github.com/tarakanbg/gcmapper">gcmapper</a> gem is updated for compatibility
+with <code>vatsim_online</code>. No user-facing changes here.</p>
+
+<p><a href="https://rubygems.org/gems/gcmapper">gcmapper on rubygems.org</a></p>
+
+<h2>airdata</h2>
+
+<p>The <a href="https://github.com/tarakanbg/airdata">airdata</a> Rails engine now includes
+default ordering for all 3 classes. Airports and waypoints are sorted
+<em>alphabetically</em> i.e. ordered by <code>id</code>, and the runways are ordered by their
+<code>airport_id</code>. Remember you can always override the default ordering by using Active
+Record&#8217;s <code>.reorder</code> <a href="http://guides.rubyonrails.org/active_record_querying.html#ordering">method</a></p>
+
+<p><a href="https://rubygems.org/gems/airdata">airdata on rubygems.org</a></p>
 </div>
 
 
@@ -164,12 +178,12 @@ should come in May and bring even more excitement!</p>
   
 
 
-<time datetime="2012-04-23T14:22:00+03:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2012</time>
+<time datetime="2012-08-28T20:22:00+03:00" pubdate data-updated="true">Aug 28<span>th</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/discoveries/'>discoveries</a>, <a class='category' href='/blog/categories/git/'>git</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/thoughts/'>thoughts</a>
+    <a class='category' href='/blog/categories/gems-/'>gems,</a>, <a class='category' href='/blog/categories/release-/'>release,</a>, <a class='category' href='/blog/categories/ruby-/'>ruby,</a>, <a class='category' href='/blog/categories/work/'>work</a>
   
 </span>
 
@@ -178,7 +192,7 @@ should come in May and bring even more excitement!</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://svilen.rubystudio.net/blog/2012/04/23/gitlab-2-dot-4-first-impressions/" data-via="svilenv" data-counturl="http://svilen.rubystudio.net/blog/2012/04/23/gitlab-2-dot-4-first-impressions/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://svilen.rubystudio.net/blog/2012/08/28/latest-gem-updates/" data-via="svilenv" data-counturl="http://svilen.rubystudio.net/blog/2012/08/28/latest-gem-updates/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -191,10 +205,8 @@ should come in May and bring even more excitement!</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/04/22/slovom-a-ruby-library-for-verbalizing-currency/" title="Previous Post: Slovom - a Ruby library for verbalizing currency">&laquo; Slovom - a Ruby library for verbalizing currency</a>
+        <a class="basic-alignment left" href="/blog/2012/08/09/railsinstaller-minor-update/" title="Previous Post: Rails Installer minor update">&laquo; Rails Installer minor update</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/04/26/rails-installer-update-for-ubuntu-12-dot-04-precise-pangolin/" title="Next Post: Rails Installer update for Ubuntu 12.04 (Precise Pangolin)">Rails Installer update for Ubuntu 12.04 (Precise Pangolin) &raquo;</a>
       
     </p>
   </footer>
@@ -397,8 +409,8 @@ should come in May and bring even more excitement!</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://svilen.rubystudio.net/blog/2012/04/23/gitlab-2-dot-4-first-impressions/';
-        var disqus_url = 'http://svilen.rubystudio.net/blog/2012/04/23/gitlab-2-dot-4-first-impressions/';
+        var disqus_identifier = 'http://svilen.rubystudio.net/blog/2012/08/28/latest-gem-updates/';
+        var disqus_url = 'http://svilen.rubystudio.net/blog/2012/08/28/latest-gem-updates/';
         var disqus_script = 'embed.js';
       
     (function () {

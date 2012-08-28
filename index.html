@@ -9,9 +9,8 @@
   <meta name="author" content="Svilen Vassilev">
 
   
-  <meta name="description" content="I made a few minor changes to my Rails Installer script,
-most notably the install flows via curl and wget are simplified and reduced
-to one-liners, &hellip;">
+  <meta name="description" content="I made a few updates to some of my gems recently and here&#8217;s a brief overview: vatsim_online The vatsim_online gem received some
+new atributes &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +78,93 @@ to one-liners, &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/08/28/latest-gem-updates/">Latest gem updates</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-28T20:22:00+03:00" pubdate data-updated="true">Aug 28<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I made a few updates to some of my gems recently and here&#8217;s a brief overview:</p>
+
+<h2>vatsim_online</h2>
+
+<p>The <a href="https://github.com/tarakanbg/vatsim_online">vatsim_online</a> gem received some
+new atributes to the <code>Station</code> class:</p>
+
+<ul>
+<li><code>planned_altitude</code> (or FL)</li>
+<li><code>transponder</code></li>
+<li><code>heading</code></li>
+<li><code>qnh_in</code> (set QNH in inches Hg)</li>
+<li><code>qnh_mb</code> (set QNH in milibars/hectopascals)</li>
+<li><code>flight_type</code> (<code>I</code> for IFR, <code>V</code> for VFR, etc)</li>
+<li><code>cid</code></li>
+<li><code>latitude_humanized</code>  (e.g. N44.09780)</li>
+<li><code>longitude_humanized</code>  (e.g. W58.41483)</li>
+</ul>
+
+
+<p>More importantly, this library now plays nicely with <a href="https://rubygems.org/gems/gcmapper">gcmapper</a>.
+A new attribute is provided for the pilot stations: <code>.gcmap</code> which returns a great
+circle map image url, depicting the GC route of the aircraft, its origin and destination,
+its current position on the route, together with its current altitude and groundspeed.</p>
+
+<p>Here&#8217;s an example:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">icao</span><span class="o">.</span><span class="n">vatsim_online</span><span class="o">[</span><span class="ss">:pilots</span><span class="o">].</span><span class="n">first</span><span class="o">.</span><span class="n">gcmap</span> <span class="c1">#=&gt; image url of the map</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://www.gcmap.com/map?P=kdfw-N44.09780+W58.41483-egll,+%22AAL026%5cn37112+ft%5cn516+kts%22%2b%40N44.09780+W58.41483&amp;MS=wls&amp;MR=540&amp;MX=720x360&amp;PM=*" alt="GC Map" /></p>
+
+<p><a href="https://rubygems.org/gems/vatsim_online">vatsim_online on rubygems.org</a></p>
+
+<h2>gcmapper</h2>
+
+<p>The <a href="https://github.com/tarakanbg/gcmapper">gcmapper</a> gem is updated for compatibility
+with <code>vatsim_online</code>. No user-facing changes here.</p>
+
+<p><a href="https://rubygems.org/gems/gcmapper">gcmapper on rubygems.org</a></p>
+
+<h2>airdata</h2>
+
+<p>The <a href="https://github.com/tarakanbg/airdata">airdata</a> Rails engine now includes
+default ordering for all 3 classes. Airports and waypoints are sorted
+<em>alphabetically</em> i.e. ordered by <code>id</code>, and the runways are ordered by their
+<code>airport_id</code>. Remember you can always override the default ordering by using Active
+Record&#8217;s <code>.reorder</code> <a href="http://guides.rubyonrails.org/active_record_querying.html#ordering">method</a></p>
+
+<p><a href="https://rubygems.org/gems/airdata">airdata on rubygems.org</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1020,76 +1106,6 @@ app and run it, but note: it requires root permissions to complete the cache rel
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/02/gcmapper-updated-with-new-features/">GCMapper updated with new features</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-02T16:18:00+03:00" pubdate data-updated="true">Jul 2<span>nd</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>It looks like <a href="https://rubygems.org/gems/gcmapper">gcmapper</a> got some traction after its
-<a href="/blog/2012/07/02/gcmapper-a-ruby-gem-for-generating-great-circle-maps/">initial release</a>,
-so after listening to some feedback I released a new version with the following changes:</p>
-
-<ul>
-<li>[Enhancement] Maps now show the user input code (ICAO or IATA) instead of ICAO only</li>
-<li>[Feature] New hash option <code>:city</code> to toggle city labels on or off (see <a href="https://github.com/tarakanbg/gcmapper#usage">Readme</a>)</li>
-<li>[Feature] New hash option <code>:airport_name</code> to toggle airport name labels on or off (see <a href="https://github.com/tarakanbg/gcmapper#usage">Readme</a>)</li>
-</ul>
-
-
-<p>Some examples of the new options:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Setting width, height, enabling terrain overlay and disabling the city labels:</span>
-</span><span class='line'><span class="s2">&quot;egll-lowi&quot;</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:width</span> <span class="o">=&gt;</span> <span class="mi">800</span><span class="p">,</span> <span class="ss">:height</span> <span class="o">=&gt;</span> <span class="mi">400</span><span class="p">,</span> <span class="ss">:terrain</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">:city</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">)</span> <span class="c1"># =&gt; Returns an image map URL with set width, height and terrain, with city labels disabled</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Setting the map to display the airports&#39; names instead of the ICAO/IATA codes</span>
-</span><span class='line'><span class="n">route</span> <span class="o">=</span> <span class="s2">&quot;egll-lowi&quot;</span>
-</span><span class='line'><span class="n">route</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:airport_name</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span> <span class="c1"># =&gt; Returns an image map URL with airport names displayed</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Setting the map to display the airports&#39; names and a terrain overlay</span>
-</span><span class='line'><span class="n">route</span> <span class="o">=</span> <span class="s2">&quot;egll-lowi&quot;</span>
-</span><span class='line'><span class="n">route</span><span class="o">.</span><span class="n">gcmap</span><span class="p">(</span><span class="ss">:airport_name</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">:terrain</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span> <span class="c1"># =&gt; Returns an image map URL with airport names and terrain displayed</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1105,6 +1121,10 @@ so after listening to some feedback I released a new version with the following 
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/08/28/latest-gem-updates/">Latest gem updates</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/08/09/railsinstaller-minor-update/">Rails Installer minor update</a>
       </li>
     
@@ -1118,10 +1138,6 @@ so after listening to some feedback I released a new version with the following 
     
       <li class="post">
         <a href="/blog/2012/07/22/vatsim-online-updates/">vatsim_online updates</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/20/vatsim-online-ruby-gem-for-retrieving-parsing-and-displaying-vatsim-online-data/">vatsim_online: ruby gem for retrieving, parsing and displaying vatsim online stations data</a>
       </li>
     
   </ul>
@@ -1214,17 +1230,6 @@ so after listening to some feedback I released a new version with the following 
   </style>
 </section>
 
-<section>
-  <h1>Endorsements</h1>
-  <p><em>If you find my work useful or time-saving, you can endorse it or buy me a beer:</em></p>
-  <div class="endorse">
-    <p><a href="http://coderwall.com/svilenv"><img src="http://api.coderwall.com/svilenv/endorse.png" alt="endorse"></a></p>
-    <p><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=5FR7AQA4PLD8A"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" alt="Donate"></a></p>
-  </div>
-  <style type="text/css">
-    .endorse {text-align: center;}
-  </style>
-</section>
 
 <section>
   <h1>GitHub Repos</h1>
@@ -1246,7 +1251,7 @@ so after listening to some feedback I released a new version with the following 
 
         github.showRepos({
             user: 'tarakanbg',
-            count: 10,
+            count: 20,
             skip_forks: true,
             target: '#gh_repos'
         });
@@ -1267,6 +1272,17 @@ so after listening to some feedback I released a new version with the following 
 </section>
 
 
+<section>
+  <h1>Endorsements</h1>
+  <p><em>If you find my work useful or time-saving, you can endorse it or buy me a beer:</em></p>
+  <div class="endorse">
+    <p><a href="http://coderwall.com/svilenv"><img src="http://api.coderwall.com/svilenv/endorse.png" alt="endorse"></a></p>
+    <p><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=5FR7AQA4PLD8A"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" alt="Donate"></a></p>
+  </div>
+  <style type="text/css">
+    .endorse {text-align: center;}
+  </style>
+</section>
 
   
 </aside>
