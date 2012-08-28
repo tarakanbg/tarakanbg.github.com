@@ -240,7 +240,7 @@ other Bulgarian ruby developers will find it useful.</p>
     var coderwall = (function(){
       function render(options, badges){
         var fragment = '',
-            t = $(options.target),
+            t = $(options.target)[0],
             height = 65,
             width = 65,
             index;
@@ -251,13 +251,13 @@ other Bulgarian ruby developers will find it useful.</p>
           fragment += '</a>';
         }
 
-        t.html(fragment);
+        t.innerHTML = fragment;
       }
       return {
         showBadges: function(options){
           $.ajax({
               url: 'http://coderwall.com/' + options.user + '.json?callback=?'
-            , dataType: 'jsonp'
+            , type: 'jsonp'
             , error: function (err) { $(options.target + ' li.loading').addClass('error').text("Error loading feed"); }
             , success: function(res) {
                 render(options, res.data.badges);
@@ -267,7 +267,21 @@ other Bulgarian ruby developers will find it useful.</p>
       };
     })();
 
-    $(document).ready(function(){
+    $.domReady(function(){
+      if (!window.jXHR){
+        var jxhr = document.createElement('script');
+        jxhr.type = 'text/javascript';
+        jxhr.src = '/javascripts/libs/jXHR.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(jxhr, s);
+      }
+      if (!window.$){
+        var b = document.createElement('script');
+        b.type = 'text/javascript';
+        b.src = '/javascripts/ender.js';
+        var sc = document.getElementsByTagName('script')[0];
+        sc.parentNode.insertBefore(jxhr, s);
+      }
       coderwall.showBadges({
         user: 'svilenv',
         target: '#cw_badges'
